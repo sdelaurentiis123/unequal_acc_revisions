@@ -149,7 +149,7 @@ In the following sections we report our key results. Namely, in \autoref{sec:pre
 \begin{figure*}
     \centering
     \includegraphics[width=1\textwidth]{lambda_fixed_magda_ratio_0_10000.pdf}
-    \caption{$\lambda(t)$ for our binary simulation suite. Each panel represents a unique simulation, with $\lambda(t)$ on the y-axis and time on the x-axis. The panel's position on the larger grid signifies its binary parameters, with $e_b$ being constant along columns and increasing from left to right, and $q_b$ being constant along rows and increasing from bottom to top.}
+    \caption{The accretion-rate ratio $\lambda(t) \equiv \dot{M}_2(t) / \dot{M}_1(t)$ for the entire 80-simulation suite. Each panel is a unique $(e_b, q_b)$ simulation, with $\lambda(t)$ on the y-axis and time on the x-axis (in units of binary orbital periods $\tau_b$). The panel's position on the larger grid signifies its binary parameters: $e_b$ is constant along columns and increases left-to-right; $q_b$ is constant along rows and increases bottom-to-top.}
     \label{fig:lambda_full}
 \end{figure*}
 
@@ -388,13 +388,13 @@ The $e_b = 0$ simulations break our \emph{time-variability} mapping but not the 
 % \mss{I also discussed the symmetry breaking in quite some detail in section 3.5 in Siwek+23a, including the relationship between disk precession period and the 'preferential accretion switching' -- might be worth mentioning here.}
 % \sod{I included some more context, but from my reading of your paper you seem to suggest that locked disks have lambda =1, and $e_b$=0 have lambda =1. I think this study shows that this is not the case. please correct me if i'm wrong, and let me know how it is best to approach this.}
 
-Further, we note that the amplitude of $\lambda(t)$ oscillations are not uniform among time-varying simulations. In fact, we note that there seems to be a relationship between the amplitude of the $\lambda(t)$ oscillation and the $e_b$ of the binary.
+Further, we note that the amplitude of $\lambda(t)$ oscillations are not uniform among time-varying simulations. In fact, we note that there is a clear correlation between the amplitude of the $\lambda(t)$ oscillation and the $e_b$ of the binary.
 % \mss{Nice!}
 
 \begin{figure}
     \centering
     \includegraphics[width=1\linewidth]{lambda_std_colormap.pdf}
-    \caption{A heat-map displaying $\sigma_{\lambda}$, the standard deviation of $\lambda(t)$, to indicate the difference in oscillation behavior across our simulations.}
+    \caption{Heat-map of $\sigma_{\lambda}$, the standard deviation of $\lambda(t)$ over the post-instability ($t > 3000 \tau_b$) portion of the simulation. Larger values (brighter) indicate stronger time-variability of preferential accretion. The variability peaks broadly in the high-$e_b$, intermediate-$q_b$ region of parameter space.}
     \label{fig:lambda_std_heatmap}
 \end{figure}
 
@@ -414,7 +414,7 @@ In addition to temporal nature of $\lambda(t)$ we also comment on the mean value
 \begin{figure}
     \centering
     \includegraphics[width=1\linewidth]{magda_fig2.pdf}
-    \caption{$\langle \lambda \rangle$ across $q_b$ and $e_b$. $\langle \lambda \rangle$ is represented on the y-axis, $q_b$ is on the x-axis, and the color represents $e_b$. We also plot the power law fitting to $\langle \lambda \rangle$ of $q_b^{-0.9}$ from \citet{siwek_prefacc} in the dashed green line.}
+    \caption{Time-averaged accretion-rate ratio $\langle \lambda \rangle = \langle \dot{M}_2 / \dot{M}_1 \rangle$ as a function of $q_b$ (x-axis) and $e_b$ (line color). The gray-shaded region marks $\langle \lambda \rangle > 1$, where the simulation labelled ``secondary'' accretes preferentially. The dashed green line is the $q_b^{-0.9}$ power-law fit reported by \citet{siwek_prefacc} for circular binaries.}
     \label{fig:mean_lambda_lines}
 \end{figure}
 
@@ -422,7 +422,7 @@ In addition to temporal nature of $\lambda(t)$ we also comment on the mean value
 \begin{figure}
     \centering
     \includegraphics[width=1\linewidth]{lambda_mean_colormap.pdf}
-    \caption{A heat-map displaying the time average of $\lambda(t)$ $\langle \lambda \rangle $ across our simulations. More eccentric, more unequal mass binaries seem to accrete more preferentially, though the trend is not monotonic.}
+    \caption{Heat-map of the time-averaged $\langle \lambda \rangle = \langle \dot{M}_2 / \dot{M}_1 \rangle$ across the suite. The diverging colormap is centered at $\lambda = 1$: red cells indicate preferential accretion onto the (apocenter-defined) secondary BH, blue cells indicate preferential accretion onto the primary. More eccentric, more unequal mass binaries tend to accrete more preferentially, though the trend is not monotonic.}
     \label{fig:lambda_mean_heatmap}
 \end{figure}
 
@@ -538,7 +538,7 @@ In addition to preferential accretion, we also report the average rate of change
 \begin{figure}
     \centering
     \includegraphics[width=1\linewidth]{qdot_heatmap_new.pdf}
-    \caption{The average rate of change of the mass-ratio $\langle \dot{q} \rangle$ for our simulation suite. The x-axis is $e_b$, the y-axis is $q_b$, and the value of $\langle \dot{q} \rangle$ is represented as color.}
+    \caption{The time-averaged rate of change of the binary mass-ratio, $\langle \dot{q} \rangle$, for the simulation suite, in $\dot{M}_b / M_b$ units. The x-axis is the binary eccentricity $e_b$ and the y-axis is the binary mass-ratio $q_b$. The diverging colormap is centered at $\langle \dot{q} \rangle = 0$: red cells indicate the binary evolves toward $q = 1$ (positive $\langle \dot{q} \rangle$), blue cells away from $q = 1$. Most $q_b < 1$ cells are positive (driven toward equal mass); the $q_b = 1$ row is mostly consistent with zero, with notable exceptions at $e_b = 0.2$ and $0.3$ where the binary evolves away from unity (\S\ref{sec:mass_ratio}).}
     \label{fig:qdot_heatmap}
 \end{figure}
 
@@ -577,7 +577,7 @@ where $m_p$ is the proton mass, $\sigma_t$ is the Thomson scattering cross-secti
 \begin{figure}
     \centering
     \includegraphics[width=1\linewidth]{lambda_edd_max_over_min_heatmap.pdf}
-    \caption{$\tilde{\lambda}$ for our simulation suite. The x-axis is $e_b$, the y-axis is $q_b$, and the colors indicate the value of $\log (\tilde{\lambda})$.}
+    \caption{The Eddington-normalized accretion-rate gauge $\tilde{\lambda} \equiv \langle\max(\dot{M}_1, \dot{M}_2)\rangle / \langle\min(\dot{M}_1, \dot{M}_2)\rangle$ for our simulation suite, in $\dot{M}_{\rm Edd}$ units. The x-axis is the binary eccentricity $e_b$ and the y-axis is the binary mass-ratio $q_b$; cell colors indicate $\log\tilde{\lambda}$. Combined with an assumed binary accretion rate $\dot{M}_b$, $\tilde{\lambda}$ converts directly into the Eddington-normalized accretion rate of each BH, allowing the jet-launching regime (single, dual, or flickering --- see \autoref{fig:mdot_edd}) to be predicted from $(q_b, e_b)$ alone for a given $\dot{M}_b$.}
     \label{fig:lambda_tilde_map}
 \end{figure}
 
