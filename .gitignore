@@ -1,0 +1,16 @@
+# LaTeX build artifacts
+*.aux
+*.bbl
+*.blg
+*.log
+*.out
+*.toc
+*.synctex.gz
+*.fls
+*.fdb_latexmk
+# Backup files
+*.bak
+main.tex.bak
+main.bib.bak
+# Data symlinks (large, not tracked)
+data/metrics_data
