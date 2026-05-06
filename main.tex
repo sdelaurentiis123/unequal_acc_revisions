@@ -347,24 +347,18 @@ In \autoref{fig:lambda_rmin_panels} we display $r_1$ (blue) $r_2$ (red) and $\la
 
 As indicated by \autoref{fig:rmin_lambda_peak_ratio} the variability of the distance from the BHs to the cavity displays the same period (or lack thereof) as $\lambda$. This is abundantly clear for the simulations in the left column of \autoref{fig:lambda_rmin_panels}, however we note that it is also true for some of the simulations in the right column where the period is time-varying. It is especially well captured by $e_b=0.5$, $q_b = 0.7$ where the change from a stochastic to periodic $\lambda$ signal at $\approx 8500 \tau$ is mirrored in the change of behavior of $r_1$, and $r_2$. Further, in $e_b=0.4$, $q_b = 0.7$ we find that large amplitude changes in $r_1$ and $r_2$  (e.g $\approx 6000 \, , 9000 \, \tau$) occur simultaneously with large amplitude changes in $\lambda$.
 
-The naive understanding of the tie between preferential accretion and the distance to the black holes is as follows. \sod{
-The inner cavity rim hosts the densest, slowest‐moving gas in the system \citep{shi_2012,farris_2014,duffell_dorazio_2020}.  
-Whenever a black hole’s Hill sphere overlaps that rim, the steep local gravitational‐potential gradient bends incoming streamlines into its mini-disk, and the instantaneous capture rate obeys a Bondi–Hoyle‐like scaling
-\[
-  \dot M_{\rm near}\;\propto\;\Sigma_{\rm rim}\,v_{\rm rel}^{-3}
-\]
-A companion just a few \(R_{\rm{Hill}}\) farther from the rim encounters lower surface density and higher gas–BH relative velocity \citep{Miranda2015,Duffell2024}, so
-\[
-  \frac{\dot M_{\rm far}}{\dot M_{\rm near}}
-  \;\sim\;
-  \frac{\Sigma}{\Sigma_{\rm rim}}
-  \!\left(\frac{v_{\rm rel}}{v_{\rm rel,\,near}}\right)^{\!3}
-  \;\ll\;1,
-\]
-suppressing its accretion by orders of magnitude even though both black holes share the same global gas reservoir.}
+The naive understanding of the tie between preferential accretion and the distance to the black holes is as follows. The inner cavity rim hosts the densest, slowest-moving gas in the system \citep{shi_2012, farris_2014, duffell_dorazio_2020}. Whenever a black hole's Hill sphere overlaps that rim, the steep local gravitational-potential gradient bends incoming streamlines into its mini-disk, and the instantaneous capture rate obeys a Bondi-Hoyle-like scaling
+\begin{equation}
+  \dot{M}_{\rm near} \propto \Sigma_{\rm rim} \, v_{\rm rel}^{-3}.
+\end{equation}
+A companion farther from the rim encounters lower surface density and higher gas-BH relative velocity \citep{miranda_munoz_lai_2017, dorazio_duffel}, so
+\begin{equation}
+  \frac{\dot{M}_{\rm far}}{\dot{M}_{\rm near}} \sim \frac{\Sigma}{\Sigma_{\rm rim}} \left(\frac{v_{\rm rel}}{v_{\rm rel,\,near}}\right)^{3} \ll 1,
+\end{equation}
+suppressing its accretion by orders of magnitude even though both black holes share the same global gas reservoir.
 
 
-In $e_b=0.2 \, , q_b=0.1$ we see what we would expect from our naive explanation. The panel \mss{is this still figure 6?} shows that this simulation has a CBD that is locked such that our primary black hole (blue) is about twice as far from the cavity edge than our secondary black hole (red). Correspondingly, we see that the secondary is accreting at a rate about five times the primary, seemingly as a result of the secondary's greater pull on its neighboring portion of the CBD. In fact, we can even take this further and note the fact that the tidal potential on the gas by the secondary is about four to five times greater than its companion, the same factor difference as the accretion rate. However, our naive approximation is inherently over-simplistic. It doesn't take into account each BH's minidisk, the streams by which the gas is fed to the BH, or any non-linear fluid dynamics, such as shocks, that may be relevant in this mechanism. Studying the other panels, we see that our naive explanation no longer suffices.
+In $(e_b, q_b) = (0.2, 0.1)$ we see what we would expect from our naive explanation. The corresponding panel of \autoref{fig:lambda_rmin_panels} shows that this simulation has a CBD that is locked such that our primary black hole (blue) is about twice as far from the cavity edge than our secondary black hole (red). Correspondingly, we see that the secondary is accreting at a rate about five times the primary, seemingly as a result of the secondary's greater pull on its neighboring portion of the CBD. In fact, we can even take this further and note the fact that the tidal potential on the gas by the secondary is about four to five times greater than its companion, the same factor difference as the accretion rate. However, our naive approximation is inherently over-simplistic. It doesn't take into account each BH's minidisk, the streams by which the gas is fed to the BH, or any non-linear fluid dynamics, such as shocks, that may be relevant in this mechanism. Studying the other panels, we see that our naive explanation no longer suffices.
 
 All simulations displayed in \autoref{fig:lambda_rmin_panels}, except for $e_b=0.2 \, , q_b=0.1$, show that lower $r_2$ values do not correspond to higher accretion rates onto the secondary. The naive explanation suggests that $r_1$ should be exactly ``in-phase'' with $\lambda$ while $r_2$ should be exactly $\pi/2$ ``out-of-phase''. However, we find that $e_b, q_b = (0.5, 0.8)$ and $e_b, q_b = (0.8, 1.0)$ both clearly do not display such behavior. The former displays that both $r_1$ and $r_2$ are $\pi/4$ out of phase with $\lambda$, while the latter displays the exact opposite to our naive expectation, that $r_1 $ is in fact ``in-phase'' and $r_2$ is ``out-of-phase''. Further, when turning to $e_b, q_b =(0.8, 0.3)$ and $e_b, q_b = (0.4, 0.7)$ we note that our naive approximation further breaks down, as now the amplitude of $r_1$ relative to $r_2$ does not strictly coincide with one BH having preferred accretion over the other. We note that for $e_b, q_b =(0.8 , 0.3)$ while the primary is always at least as far away from the cavity-wall as the secondary, we still see periods where the primary accretes perferentially. Further, for $e_b, q_b = (0.4 , 0.7)$ we see a similar issue in that during periods where both the primary and secondary are equidistant from the cavity wall, the secondary is accreting up to 4 times more than the primary\footnote{While $\lambda$ is a ratio and this behavior could be due to small amplitude deviations in $\dot{M}_1$ and $\dot{M}_2$, we found that the amplitude of the sum is not strongly suppressed during this period.}.
 
