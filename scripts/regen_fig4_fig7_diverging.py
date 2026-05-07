@@ -68,7 +68,7 @@ for i in range(len(qblist)):
         )
 
 cbar = plt.colorbar(c, ax=ax)
-cbar.set_label(r"$\langle \lambda \rangle$ (centered at $\lambda=1$)", fontsize=12)
+cbar.set_label(r"$\langle \lambda \rangle = \langle \dot{M}_2 / \dot{M}_1 \rangle$ (centered at $\lambda=1$)", fontsize=12)
 ax.set_xlabel(r"$e_b$", fontsize=12)
 ax.set_ylabel(r"$q_b$", fontsize=12)
 plt.tight_layout()
@@ -125,7 +125,7 @@ for i in range(len(qblist)):
         )
 
 cbar = plt.colorbar(im, ax=ax)
-cbar.set_label(r"$\langle \dot{q} \rangle$ [in units of $\dot{M}_b / M_b$]", fontsize=11)
+cbar.set_label(r"$\langle \dot{q} \rangle = \langle d/dt(M_2/M_1) \rangle$ [$\dot{M}_b / M_b$]", fontsize=11)
 ax.set_xlabel(r"$e_b$", fontsize=12)
 ax.set_ylabel(r"$q_b$", fontsize=12)
 plt.tight_layout()

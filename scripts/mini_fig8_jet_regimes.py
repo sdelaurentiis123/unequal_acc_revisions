@@ -39,7 +39,7 @@ TIME_START = 7500
 TIME_END = 9500
 
 # Mdot_b values to render (left panel, right panel)
-MDOT_FACTORS = [0.5, 5.0]
+MDOT_FACTORS = [0.001, 5.0]
 
 REGIME_COLORS = {
     'none':       (1.0, 1.0, 1.0, 0.0),       # white (transparent)
@@ -63,12 +63,28 @@ def load_sim(qb, eb):
     ms = np.asarray(d['mdot2'])  # secondary
     return t, mp, ms
 
-def classify(mdot_p_frac_window, mdot_s_frac_window):
-    n_s = int((mdot_s_frac_window > 1).sum())
-    n_p = int((mdot_p_frac_window > 1.1).sum())
-    n_simul = int(((mdot_s_frac_window > 1) & (mdot_p_frac_window > 1.1)).sum())
+def classify(mdot_p_frac_window, mdot_s_frac_window, mdot_factor):
+    """Per §4.1, jets launch in BOTH the super-Eddington thick-disk
+    regime (Mdot > 1.1 Mdot_Edd) AND the low-Mdot ADAF regime
+    (Mdot < 0.01 Mdot_Edd). For super-Eddington panels (mdot_factor >=
+    0.1) we apply the high threshold; for deep-ADAF panels (mdot_factor
+    <= 0.05) we apply the low threshold. This avoids the flickering
+    classifier misfiring near the radiatively-efficient transition.
+    """
+    if mdot_factor >= 0.1:
+        # super-Eddington branch: BH jets when Mdot > 1.1 Mdot_Edd
+        p_jets = mdot_p_frac_window > 1.1
+        s_jets = mdot_s_frac_window > 1.0  # match existing Fig 8: secondary at 1.0
+    else:
+        # ADAF branch: BH jets when Mdot < 0.01 Mdot_Edd
+        p_jets = mdot_p_frac_window < 0.01
+        s_jets = mdot_s_frac_window < 0.01
+    n_p = int(p_jets.sum())
+    n_s = int(s_jets.sum())
+    n_simul = int((p_jets & s_jets).sum())
     regime = 'none'
-    if n_s > 0:
+    # single = either BH crosses threshold (either branch)
+    if n_p > 0 or n_s > 0:
         regime = 'single'
     if n_s > 1 and n_p > 50:
         regime = 'flickering'
@@ -94,7 +110,7 @@ def compute_panel(qb, eb, mdot_factor):
     ms_frac = ms_phys / eddington(m_s)
     mask = (t >= TIME_START) & (t <= TIME_END)
     t_w = t[mask]; mp_w = mp_frac[mask]; ms_w = ms_frac[mask]
-    regime = classify(mp_w, ms_w)
+    regime = classify(mp_w, ms_w, mdot_factor)
     return t_w, mp_w, ms_w, regime
 
 # ============================================================
@@ -107,7 +123,15 @@ NCOLS = len(ecclist) # 8
 fig = plt.figure(figsize=(16.5, 10.5))
 outer = fig.add_gridspec(1, 2, left=0.06, right=0.99, bottom=0.08, top=0.94, wspace=0.07)
 
-YLIM = (3e-3, 3e2)  # padded so tick labels don't crush at panel boundaries
+# per-panel ylim shifts with Mdot_b so the data is visible. Each ylim
+# spans 5 decades centered on log10(Mdot_b) and includes the relevant
+# threshold line.
+def ylim_for(mf):
+    # data sits roughly at mf-decade; pad +/- 2.5 decades around it
+    import math
+    center = math.log10(mf)
+    return (10 ** (center - 2.5), 10 ** (center + 2.5))
+
 TIME_LABEL_TICKS = [8000, 9000]
 
 regime_counts = {mf: {'none':0,'single':0,'dual':0,'flickering':0} for mf in MDOT_FACTORS}
@@ -133,18 +157,20 @@ for panel_idx, mf in enumerate(MDOT_FACTORS):
                 ax.plot(t_w, mp_w, color='black', lw=0.5, alpha=0.85)
                 ax.plot(t_w, ms_w, color='red',   lw=0.5, alpha=0.85)
                 ax.axhline(1.0, color='gray', ls='--', lw=0.5, alpha=0.6)
+                ax.axhline(0.01, color='gray', ls=':', lw=0.5, alpha=0.6)
                 ax.set_facecolor(REGIME_COLORS[regime])
 
             ax.set_yscale('log')
-            ax.set_ylim(*YLIM)
+            ax.set_ylim(*ylim_for(mf))
             ax.set_xlim(TIME_START, TIME_END)
 
-            # Only outer rows/cols get visible ticks/labels
+            # Only outer rows/cols get visible ticks/labels.
+            # Both panels need their own y-tick labels (different y-ranges).
             ax.tick_params(axis='both', which='both',
                            bottom=(i == NROWS - 1), top=False,
-                           left=(panel_idx == 0 and j == 0), right=False,
+                           left=(j == 0), right=False,
                            labelbottom=(i == NROWS - 1),
-                           labelleft=(panel_idx == 0 and j == 0),
+                           labelleft=(j == 0),
                            labelsize=8, length=2)
             if i == NROWS - 1:
                 ax.set_xticks(TIME_LABEL_TICKS)
@@ -152,7 +178,8 @@ for panel_idx, mf in enumerate(MDOT_FACTORS):
                 ax.set_xlabel(rf'$e_b$={eb:.1f}', fontsize=10, labelpad=3)
             else:
                 ax.set_xticks([])
-            if panel_idx == 0 and j == 0:
+            # q_b row labels only on the left panel (right panel is redundant)
+            if j == 0 and panel_idx == 0:
                 ax.set_ylabel(rf'$q_b$={qb:.1f}', fontsize=10, labelpad=3)
 
 

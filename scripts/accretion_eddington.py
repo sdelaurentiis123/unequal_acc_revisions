@@ -707,7 +707,7 @@ cax = divider.append_axes("right", size="5%", pad=0.05)
 cbar= plt.colorbar(im, cax=cax)
 # Add colorbar and label
 #cbar = fig.colorbar(im, ax=ax)
-cbar.set_label(r'log($ \tilde{\lambda} $) ')
+cbar.set_label(r'$\log_{10} \tilde{\lambda}$, where $\tilde{\lambda} = \langle \max(\dot{M}_1, \dot{M}_2) \rangle / \langle \min(\dot{M}_1, \dot{M}_2) \rangle$')
 
 
 # Add axis labels if desired

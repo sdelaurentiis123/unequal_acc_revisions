@@ -49,7 +49,7 @@ for ebind, eb in enumerate(ecclist):
 
 # Add labels, legend, and colorbar
 ax.set_xlabel(r"$q_b$", fontsize=14)
-ax.set_ylabel(r"$\lambda$", fontsize=14)
+ax.set_ylabel(r"$\langle \lambda \rangle = \langle \dot{M}_2 / \dot{M}_1 \rangle$", fontsize=14)
 ax.set_xscale('log')
 ax.set_yscale('log')
 

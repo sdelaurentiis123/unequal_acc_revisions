@@ -16,7 +16,7 @@ This document maps every Zoltan comment from his March 24, 2025 marked-up PDF to
 | 2 | One-to-one mapping logic — what mapping is being broken? | ✅ | 34a60d9 | DIFF 4: distinguishes "time-variability mapping" (V/S ↔ L/P) from "time-averaged framework" (Siwek+23a's symmetry argument). Explicitly cites Magda's Section 3.5. e_b=0 reframed as Magda's free-precession branch. |
 | 3 | Diverging colormaps for Figs 4 and 7 | ✅ | b5cb1e7 | TwoSlopeNorm with seismic, centered at λ=1 (Fig 4) and q̇=0 (Fig 7). 9 of 80 cells in Fig 4 with λ < 1 now visually obvious. |
 | 4a | Cartoon of cavity + binary at apocenter + r_1, r_2 | ✅ | 4b03688 | Inline TikZ in §3.1.1. Cavity ellipse, binary at apocenter for q_b=0.1, r_1 and r_2 vectors, precession indicator. |
-| 4b | Fourier-transform companion panels for Fig 6 examples | 🟡 | — | Not implemented as a separate figure (skipped for time). Methodology bridge (DIFF 3) explains the period match qualitatively without needing the FFT figure. |
+| 4b | Fourier-transform companion panels for Fig 6 examples | ✅ | 1d9a463 | New `fig:fourier_panels` (Fig 8) shows time-series + periodograms for two messy cases of Fig 6, with normalized rFFT amplitudes and the 0.05 threshold. |
 | 5a | Delete half-finished ballistic-orbits allusion | ✅ | (v2 baseline) | Already commented out in v2. |
 | 5b | Justify jump from r_1, r_2 at apocenter → CBD precession | ✅ | 34a60d9 | DIFF 3: methodology bridge in plain language (no "stroboscopic" or "Nyquist" jargon). Three-step: cadence vs precession period; r_1=r_2 in period; period match licenses inference. |
 | 6 | Mini Fig 8 panels for varying Ṁ_b | ✅ | 4b03688 | scripts/mini_fig8_jet_regimes.py generates 4-panel jet-regime classification heatmap at Ṁ_b ∈ {0.01, 0.1, 1, 10} Ṁ_Edd. Tapestry shifts dramatically with Ṁ_b. Fig:mini_fig8_jet_regimes added in §4.1. |
@@ -71,7 +71,7 @@ This document maps every Zoltan comment from his March 24, 2025 marked-up PDF to
 
 | Annotation | Status | Commit | Notes |
 |---|---|---|---|
-| 4.1 Panels touching, larger labels | 🔴 | — | Skipped (full subplot grid rewrite of magda_accretion_actual_fixed.py — half-day task) |
+| 4.1 Panels touching, larger labels | ✅ | 8464a95 | Fig 1 + Fig 5 use `sharex=True, sharey=True, hspace=wspace=0`; axis labels at 16pt; figsize 21×20 → 16×20. |
 | 4.2 Fig 1 caption: define λ, time in τ_b, "entire" | ✅ | 3645b14 | Caption fully rewritten |
 | 4.3 "is a clear correlation" body wording | ✅ | 3645b14 | Done |
 | 4.4 3000-orbit footnote ambiguity | ✅ | (final pass) | Footnote rewritten: 3000 τ_b transient cut, 7000 τ_b retained at 10 τ_b cadence, N=700 explicit |
