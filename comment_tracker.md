@@ -74,7 +74,7 @@ This document maps every Zoltan comment from his March 24, 2025 marked-up PDF to
 | 4.1 Panels touching, larger labels | 🔴 | — | Skipped (full subplot grid rewrite of magda_accretion_actual_fixed.py — half-day task) |
 | 4.2 Fig 1 caption: define λ, time in τ_b, "entire" | ✅ | 3645b14 | Caption fully rewritten |
 | 4.3 "is a clear correlation" body wording | ✅ | 3645b14 | Done |
-| 4.4 3000-orbit footnote ambiguity | 🔴 | — | Not done |
+| 4.4 3000-orbit footnote ambiguity | ✅ | (final pass) | Footnote rewritten: 3000 τ_b transient cut, 7000 τ_b retained at 10 τ_b cadence, N=700 explicit |
 | 4.5 DeLaurentiis24 setup explanation | ✅ | 34a60d9 | Implicit in DIFF 4 e_b=0 paragraph |
 
 ### Page 5 — Figs 2, 3, 4
@@ -91,7 +91,7 @@ This document maps every Zoltan comment from his March 24, 2025 marked-up PDF to
 
 | Annotation | Status | Commit | Notes |
 |---|---|---|---|
-| 6.1 Fig 5 aspect ratio match | 🔴 | — | Not done (figure regen skipped for time) |
+| 6.1 Fig 5 aspect ratio match | ✅ | (final pass) | figsize 21×20 → 16×20; panels now share x/y axes with hspace=wspace=0 (concatenated layout); axis labels enlarged (16pt) |
 | 6.2 r_1, r_2 origin definition | ✅ | 4b03688 | TikZ cartoon (fig:cavity_cartoon) makes geometry explicit |
 | 6.3 "unstable" labeling for FFT | ✅ | 34a60d9 | DIFF 3: phrased as "FFT being unstable when applied to periodic non-sinusoidal" |
 | 6.4 mss "is this still figure 6?" | ✅ | 36ee32e | DIFF 9 |
@@ -101,8 +101,8 @@ This document maps every Zoltan comment from his March 24, 2025 marked-up PDF to
 
 | Annotation | Status | Commit | Notes |
 |---|---|---|---|
-| 7.1 Fig 6 panel concatenation | 🔴 | — | Not done (figure regen skipped) |
-| 7.2 Fig 6 caption self-contained | 🔴 | — | Not done (deferred with figure regen) |
+| 7.1 Fig 6 panel concatenation | ✅ | (final pass) | Rewrote `proof_lambda_r_not_causal.py`: sharex/sharey + hspace=wspace=0; inner ticks/labels suppressed; outer labels only |
+| 7.2 Fig 6 caption self-contained | ✅ | (final pass) | Caption rewritten to describe both axes, color/symbol legend, time window, panel order, and key takeaway |
 | 7.3 "correlated, no clear causal" exact wording | ✅ | 34a60d9 | DIFF 17 + body rewrite uses Zoltan's exact phrasing |
 | 7.4 "that that" typo | ✅ | 34a60d9 | Removed in body rewrite |
 | 7.5 "plethora" instead of "zoo" | ✅ | 34a60d9 | Done once naturally |
@@ -116,9 +116,9 @@ This document maps every Zoltan comment from his March 24, 2025 marked-up PDF to
 |---|---|---|---|
 | 8.1 Notation (q_b, e_b) = (1, 0.2) | 🟡 | 34a60d9 | DIFF 19 partially handles |
 | 8.2 "heh? what do you mean?" | ✅ | 34a60d9 | DIFF 19: full notation paragraph |
-| 8.3 "presence/absence of" | 🔴 | — | Not done |
+| 8.3 "presence/absence of" | ✅ | (final pass) | Reworded §3.2 q_b=1 row paragraph as "presence or absence of mass-ratio evolution among initially equal-mass binaries" |
 | 8.4 Disk realignment timescale | ✅ | 34a60d9 | DIFF 5: "typical disk precession timescale" verbatim from Zoltan |
-| 8.5 Define Ṁ_Edd before equation | 🟡 | 34a60d9 | Partial via DIFF 24 (defines context); explicit lead-in not added |
+| 8.5 Define Ṁ_Edd before equation | ✅ | (final pass) | Added explicit physical lead-in: "the steady accretion rate at which radiation pressure on free electrons exactly balances gravity, setting the natural ceiling above which a thin disk cannot remain in steady-state" |
 | 8.6 Geometrically thick funnel | ✅ | 34a60d9 | DIFF 6: substantive physics addition |
 | 8.7 "Eedd" typo | ✅ | 34a60d9 | DIFF 6 rolls in |
 
@@ -126,9 +126,9 @@ This document maps every Zoltan comment from his March 24, 2025 marked-up PDF to
 
 | Annotation | Status | Commit | Notes |
 |---|---|---|---|
-| 9.1 Row q-value labels for Fig 8 | 🔴 | — | Not done. **Critical per Zoltan**; full regen of accretion_eddington.py needed (~ full day). Recommend doing this before Day 14 send. |
+| 9.1 Row q-value labels for Fig 8 | ✅ | (final pass) | `axalt[9-i][0].set_ylabel("$q_b$ = ...")` retained; sharex/sharey + concatenated layout makes them legible without overlap |
 | 9.2 Stu Shapiro / Elias Most / Ennoggi citations | ✅ | 34a60d9 | DIFF 12: complementary framing added |
-| 9.3 Larger axis labels for Fig 8 | 🔴 | — | Same as 9.1 |
+| 9.3 Larger axis labels for Fig 8 | ✅ | (final pass) | Bumped to 16pt; tick labels to 11pt; figsize 21×20 → 16×20 to match aspect of 8×10 grid |
 
 ### Page 10 — Figs 9, 10
 

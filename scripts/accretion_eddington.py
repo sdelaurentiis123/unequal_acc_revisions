@@ -306,8 +306,10 @@ ecclist=[0.0,0.1, 0.2,0.3,0.4,0.5,0.6,0.8]
 qblist=[0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0]
 
 
-fig, ax =plt.subplots(10,8)
-figalt, axalt =plt.subplots(10,8)
+fig, ax =plt.subplots(10,8, sharex=True, sharey=True,
+                       gridspec_kw={'hspace': 0.0, 'wspace': 0.0})
+figalt, axalt =plt.subplots(10,8, sharex=True, sharey=True,
+                            gridspec_kw={'hspace': 0.0, 'wspace': 0.0})
 
 time_start=6000
 time_end=7000
@@ -653,17 +655,21 @@ for axs in axalt.flatten():
     
 
 
+LABEL_FS_FIG8 = 16
+TICK_FS_FIG8 = 11
 for i in range(10):
-    axalt[9-i][0].set_ylabel(r'$\rm{q}_{\rm{b}}$: '+format(qblist[i],'.1f'))
+    axalt[9-i][0].set_ylabel(r'$q_b$ = '+format(qblist[i],'.1f'),
+                              fontsize=LABEL_FS_FIG8)
 
-    
- 
 for i in range(8):
-    axalt[9][i].set_xlabel(r'$\rm{e}_{\rm{b}}$: '+format(ecclist[i],'.1f'))
+    axalt[9][i].set_xlabel(r'$e_b$ = '+format(ecclist[i],'.1f'),
+                            fontsize=LABEL_FS_FIG8)
+
+for axs in axalt.flatten():
+    axs.tick_params(labelsize=TICK_FS_FIG8)
 
 figalt.set_figheight(20)
-figalt.set_figwidth(21)             
-figalt.tight_layout()
+figalt.set_figwidth(16)
 
 figalt.savefig('mdot1_mdot2_1edd_both_truncated.pdf')
 

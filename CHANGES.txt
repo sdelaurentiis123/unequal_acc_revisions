@@ -146,18 +146,70 @@ Science grant numbers are placeholder — I need those from you. Ginsburg
 HPC cluster acknowledgement added per Columbia CUIT documentation.
 
 
-WHAT I DEFERRED FOR TIME (full list in comment_tracker.md)
+FIGURE + PROSE SWEEPS COMPLETED IN FINAL PASS
 
-The biggest item I deferred is the Fig 8 axis-label rewrite (your
-annotations 9.1, 9.3 — you wrote the labels in by hand on the marked-up
-PDF). That requires rewriting accretion_eddington.py end-to-end and is
-roughly a full day of work. If you want it before submission, tell me.
+After our last exchange I went back through the deferred list and
+finished the items I had time for. Specifically:
 
-Smaller deferrals: Fig 1 layout (panels touching), Fig 5 aspect ratio,
-Fig 6 panel concatenation, Fig 10 detection-region annotations, Fourier
-panels for #4b, citation hunt for Barnes & Hernquist 1992 + D'Orazio 2013
-in periodogram-of-q context, page 1-2 small prose sweeps, (e_b, q_b)
-ordering paper-wide.
+  Fig 1 layout (annotation 4.1): rewrote magda_accretion_actual_fixed.py
+    to share x/y axes and use hspace=wspace=0, so the 10×8 panel grid
+    now has touching panels with no gaps. Axis labels bumped to 16pt.
+
+  Fig 5 aspect ratio (annotation 6.1): figsize changed from 21×20 to
+    16×20 (matching the 8:10 column:row ratio so per-panel aspect is
+    closer to square). Same touching-panel layout as Fig 1.
+
+  Fig 6 panel concatenation (annotation 7.1): full rewrite of
+    proof_lambda_r_not_causal.py. sharex/sharey, hspace=wspace=0, inner
+    ticks suppressed, simulation labels moved into in-panel text boxes.
+
+  Fig 6 caption self-contained (annotation 7.2): caption rewritten to
+    describe both y-axes (Mdot left, r right), color/symbol legend, time
+    window, panel order, and the key takeaway about (0.2, 0.1) being
+    the only naive-prediction-satisfying panel.
+
+  Fig 8 row q-labels + larger axis labels (annotations 9.1, 9.3): the
+    one you flagged as "critical." accretion_eddington.py updated so
+    figalt (the Mdot1, Mdot2 panel grid) now has sharex/sharey, panels
+    touching, q_b labels on the left column and e_b labels on the
+    bottom row at 16pt, tick labels at 11pt. figsize 21×20 → 16×20.
+
+  3000-orbit footnote (annotation 4.4): rewritten to make the cut
+    explicit — "discard the first 3000 τ_b... remaining 7000 τ_b
+    sampled at the snapshot cadence of 10 τ_b, giving N=700 usable
+    points per simulation."
+
+  presence/absence wording (annotation 8.3): §3.2 paragraph reworded
+    so the q_b=1 result is framed as "the presence or absence of
+    mass-ratio evolution among initially equal-mass binaries" — most
+    show absence, (0.2, 1.0) and (0.3, 1.0) show presence.
+
+  Mdot_Edd lead-in (annotation 8.5): added a physical sentence before
+    the Eddington equation defining Mdot_Edd as "the steady accretion
+    rate at which radiation pressure on free electrons exactly
+    balances gravity, setting the natural ceiling above which a thin
+    disk cannot remain in steady-state."
+
+  Barnes & Hernquist 1992 citation: added at the "AGN, accreting
+    binary stars" lead-in in §1, with the new bib entry.
+
+  D'Orazio 2013 periodogram cite: added at the time-stable vs
+    time-varying separation in §3.1.
+
+  (e_b, q_b) ordering: paper-wide perl sweep so notation always reads
+    (e_b, q_b) not (q_b, e_b).
+
+Several small prose items from page 1-2 were also folded in:
+"and binary stars" lead, "to date" qualifier on quasi-stationary
+disks, "and refer readers to" on Lai/Munoz review, density+temperature
+profile mention, "settle" not "viscously spread", ELRs/Statler
+clarification, and explicit "apsidal not nodal" precession in main text.
+
+WHAT REMAINS DEFERRED (smaller items, full list in comment_tracker.md)
+
+Fig 10 detection-region annotations (10.1), Fourier panels for #4b.
+Both can be added if you want them; both are non-blocking for the
+science claims.
 
 
 WHAT I NEED FROM YOU

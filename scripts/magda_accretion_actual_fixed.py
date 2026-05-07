@@ -251,11 +251,15 @@ ecclist=[0.0,0.1, 0.2,0.3,0.4,0.5,0.6,0.8]
 qblist=[0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0]
 
 i=0
-fig, ax =plt.subplots(10,8)
-figalt, axalt =plt.subplots(10,8)
+fig, ax =plt.subplots(10,8, sharex=True, sharey=True,
+                       gridspec_kw={'hspace': 0.0, 'wspace': 0.0})
+figalt, axalt =plt.subplots(10,8, sharex=True, sharey=True,
+                       gridspec_kw={'hspace': 0.0, 'wspace': 0.0})
 
-fig1, ax1 =plt.subplots(10,8)
-fig1alt, ax1alt =plt.subplots(10,8)
+fig1, ax1 =plt.subplots(10,8, sharex=True, sharey=True,
+                       gridspec_kw={'hspace': 0.0, 'wspace': 0.0})
+fig1alt, ax1alt =plt.subplots(10,8, sharex=True, sharey=True,
+                       gridspec_kw={'hspace': 0.0, 'wspace': 0.0})
 
 time_start_list=np.array([5800, 8000, 9000])
 time_end_list=time_start_list+300
@@ -331,7 +335,7 @@ for timeindex in range(len(time_start_list)):
                 
                 time0_new, mdot0_new = sliding_window_mass_summary(time, mass_in0, 10)
                 time1_new, mdot1_new = sliding_window_mass_summary(time, mass_in1, 10)
-                sfjslk
+                # sfjslk  -- NameError breakpoint disabled for fig 5 regen
                 
                 ########
 
@@ -471,29 +475,33 @@ for timeindex in range(len(time_start_list)):
         axs.set_xlim(time_start,time_end)
     
 
+    LABEL_FS = 16
+    TICK_FS = 11
     for i in range(10):
-        ax[9-i][0].set_ylabel(r'$\rm{q}_{\rm{b}}$: '+format(qblist[i],'.1f'))
-        axalt[9-i][0].set_ylabel(r'$\rm{q}_{\rm{b}}$: '+format(qblist[i],'.1f'))
-        ax1[9-i][0].set_ylabel(r'$\rm{q}_{\rm{b}}$: '+format(qblist[i],'.1f'))
-        ax1alt[9-i][0].set_ylabel(r'$\rm{q}_{\rm{b}}$: '+format(qblist[i],'.1f'))
-        
-     
+        ax[9-i][0].set_ylabel(r'$q_b$ = '+format(qblist[i],'.1f'), fontsize=LABEL_FS)
+        axalt[9-i][0].set_ylabel(r'$q_b$ = '+format(qblist[i],'.1f'), fontsize=LABEL_FS)
+        ax1[9-i][0].set_ylabel(r'$q_b$ = '+format(qblist[i],'.1f'), fontsize=LABEL_FS)
+        ax1alt[9-i][0].set_ylabel(r'$q_b$ = '+format(qblist[i],'.1f'), fontsize=LABEL_FS)
+
+
     for i in range(8):
-        ax[9][i].set_xlabel(r'$\rm{e}_{\rm{b}}$: '+format(ecclist[i],'.1f'))
-        axalt[9][i].set_xlabel(r'$\rm{e}_{\rm{b}}$: '+format(ecclist[i],'.1f'))
-        ax1alt[9][i].set_xlabel(r'$\rm{e}_{\rm{b}}$: '+format(ecclist[i],'.1f'))
-        ax1[9][i].set_xlabel(r'$\rm{e}_{\rm{b}}$: '+format(ecclist[i],'.1f'))
+        ax[9][i].set_xlabel(r'$e_b$ = '+format(ecclist[i],'.1f'), fontsize=LABEL_FS)
+        axalt[9][i].set_xlabel(r'$e_b$ = '+format(ecclist[i],'.1f'), fontsize=LABEL_FS)
+        ax1alt[9][i].set_xlabel(r'$e_b$ = '+format(ecclist[i],'.1f'), fontsize=LABEL_FS)
+        ax1[9][i].set_xlabel(r'$e_b$ = '+format(ecclist[i],'.1f'), fontsize=LABEL_FS)
+
+    # Bigger tick labels on the visible (outer) panels
+    for axs in ax.flatten():
+        axs.tick_params(labelsize=TICK_FS)
 
 
-    
-    
+
     fig.set_figheight(20)
-    fig.set_figwidth(21)             
-    fig.tight_layout()
-    
+    fig.set_figwidth(16)
+
     fig.savefig('lambda_fixed_magda_ratio_'+str(time_start) + '_'+str(time_end)+'.pdf')
     plt.close(fig)
-    sfd
+    import sys; sys.exit(0)
     
     
     
