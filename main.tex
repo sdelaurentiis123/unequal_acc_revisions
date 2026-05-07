@@ -459,38 +459,37 @@ As discussed in \autoref{sec:methods}, we use the dominant Fourier modes of the 
     \centering
     \begin{tikzpicture}[scale=2.0]
       % --- cavity ellipse, locked orientation, secondary side closer ---
-      % Centered at origin, semi-major a = 1.4 along x, semi-minor b = 1.0 along y
-      % Rotated to put pericenter toward the secondary (right side)
-      \draw[thick, red!70!black] (0,0) ellipse (1.4 and 1.0);
-      \node[red!70!black, anchor=south] at (0, 1.05) {\footnotesize CBD inner edge (cavity wall)};
+      \draw[thick, black] (0,0) ellipse (1.4 and 1.0);
+      \node[black, anchor=south] at (0, 1.10) {\footnotesize CBD inner edge};
 
-      % --- center of mass ---
-      \fill[gray] (0,0) circle (0.025);
-      \node[gray, anchor=north] at (0, -0.05) {\footnotesize COM};
+      % --- center of mass: X marker (less dramatic than a filled dot) ---
+      \draw[black, thick] (-0.04, -0.04) -- (0.04, 0.04);
+      \draw[black, thick] (-0.04, 0.04) -- (0.04, -0.04);
+      \node[black, anchor=north west, font=\scriptsize] at (0.02, -0.05) {COM};
 
-      % --- binary at apocenter ---
-      % For (e_b, q_b) = (0.2, 0.1): primary at d_1 = -0.109a, secondary at d_2 = +1.091a
-      % Scale: a_b = 1 in this picture; binary separation 1.2 at apocenter
-      \fill[blue] (-0.109, 0) circle (0.06) node[above left, blue] {\scriptsize $M_1$};
-      \fill[red]  (+1.091, 0) circle (0.025) node[above, red] {\scriptsize $M_2$};
+      % --- binary at apocenter, q_b = 0.1, e_b = 0.2 ---
+      % primary at d_1 = -0.109a, secondary at d_2 = +1.091a
+      \fill[blue!70!black] (-0.109, 0) circle (0.06);
+      \node[blue!70!black, anchor=east, font=\scriptsize] at (-0.18, 0.0) {$M_1$};
+      \fill[red!70!black]  (+1.091, 0) circle (0.030);
+      \node[red!70!black, anchor=south, font=\scriptsize] at (+1.091, 0.05) {$M_2$};
 
-      % --- r_1 vector: primary to nearest cavity wall (on far side, opposite to secondary) ---
-      \draw[<->, blue, thick] (-0.109, 0) -- (-1.4, 0);
-      \node[blue, below] at (-0.75, -0.02) {\footnotesize $r_1$};
+      % --- r_1 vector: primary to nearest cavity wall on its (far) side ---
+      \draw[<->, blue!70!black, thick] (-0.109, 0.18) -- (-1.4, 0.18);
+      \node[blue!70!black, anchor=south, font=\scriptsize] at (-0.75, 0.20) {$r_1$};
 
-      % --- r_2 vector: secondary to nearest cavity wall (on the same side) ---
-      \draw[<->, red, thick] (+1.091, 0) -- (+1.4, 0);
-      \node[red, above] at (+1.25, 0.04) {\footnotesize $r_2$};
+      % --- r_2 vector: secondary to nearest cavity wall on its (near) side ---
+      \draw[<->, red!70!black, thick] (+1.091, -0.20) -- (+1.4, -0.20);
+      \node[red!70!black, anchor=north, font=\scriptsize] at (+1.25, -0.22) {$r_2$};
 
       % --- binary axis line ---
       \draw[gray, dashed, thin] (-0.109, 0) -- (+1.091, 0);
 
       % --- precession indicator ---
-      \draw[->, gray!70!black, thick, decoration={markings, mark=at position 0.5 with {\arrow{>}}}, postaction={decorate}]
-        (0.0, 1.0) arc[start angle=90, end angle=130, x radius=1.4, y radius=1.0];
-      \node[gray!70!black, anchor=south east] at (-0.7, 1.0) {\scriptsize precession};
+      \draw[->, gray!60!black, thick] (-0.7, 0.85) arc[start angle=130, end angle=90, x radius=1.4, y radius=1.0];
+      \node[gray!60!black, anchor=west, font=\scriptsize] at (-1.1, 0.95) {precession};
     \end{tikzpicture}
-    \caption{Schematic of the cavity geometry at apocenter for the locked-CBD case (here illustrated for an unequal-mass binary with $q_b \ll 1$). The CBD inner edge (red ellipse) is closer to the secondary on one side. The closest distances from each BH to the cavity wall are $r_1$ (primary, blue) and $r_2$ (secondary, red); in the locked configuration shown, $r_1 > r_2$. As the disk precesses, the major axis of the ellipse rotates, and the orientations of $r_1$ and $r_2$ change accordingly.}
+    \caption{Schematic of the cavity geometry at apocenter for the locked-CBD case, illustrated for an unequal-mass binary with $q_b \ll 1$. The CBD inner edge (black ellipse) is closer to the secondary BH ($M_2$, red) on one side; the primary ($M_1$, blue) is farther from its nearby cavity wall. Closest distances from each BH to the wall are $r_1$ and $r_2$, with $r_1 > r_2$ in the locked configuration shown. As the disk precesses (curved gray arrow), the ellipse's major axis rotates, and the orientations of $r_1$ and $r_2$ change accordingly.}
     \label{fig:cavity_cartoon}
 \end{figure}
 
@@ -598,14 +597,7 @@ Finally, we have a few dual-jet systems. For those at $e_b=0$ both BHs accrete a
 
 While dual jets from BBH systems have been suggested before \citep{Palenzuela_dualjet_10, Qian_dualjet_19} and demonstrated numerically in a range of GR-MHD setups \citep{Gutierrez_24, Ressler_dualjet_25, Ruiz_Shapiro_23, Most_Wang_24, Ennoggi_25}, we believe that we are \textit{the first to report evidence suggesting a flickering-jet behavior} --- alternating, rather than coincident, jet activity from the two BHs. We emphasize that the prior GR-MHD work has typically begun from configurations in which jet conditions are already satisfied at both BHs (e.g., a magnetically arrested circumbinary flow) and asks how the resulting jets evolve through inspiral. Our framing is complementary: we ask, given a hydrodynamic accretion-rate time series, when each BH's accretion crosses the threshold required for jet activity in the first place. The flickering regime is unique to $e_b \neq 0$ binaries with large $\lambda$ amplitudes, and provides a uniquely distinct feedback mechanism that could be further explored in cosmological simulations. 
 
-\autoref{fig:mdot_edd} and its discussion assumed a binary accretion rate of $1 \dot{M}_{\rm Edd}$. However, such assumption only controls the baseline of the binary accretion rate. While a different assumed binary accretion rate would not change the profiles nor the relative accretion rates of the components, it would affect the absolute amplitude---changing its jet-launching behavior. We display this in \autoref{fig:mini_fig8_jet_regimes}, which shows the jet-regime classification across $(e_b, q_b)$ parameter space at four different binary accretion rates $\dot{M}_b \in \{0.01, 0.1, 1, 10\} \dot{M}_{\rm Edd}$.
-
-\begin{figure*}
-    \centering
-    \includegraphics[width=\textwidth]{mini_fig8_jet_regimes.pdf}
-    \caption{Jet-regime classification across $(e_b, q_b)$ parameter space at four different assumed binary accretion rates: $\dot{M}_b = 0.01, 0.1, 1, 10 \dot{M}_{\rm Edd}$. Cells are color-coded by jet behavior: white = no jet, blue = single jet, purple = dual jet, green = flickering jet. The threshold and duration criteria are the same as in \autoref{fig:mdot_edd}. The qualitative tapestry of regimes shifts dramatically with $\dot{M}_b$: at sub-Eddington rates almost no jets launch, at $1 \dot{M}_{\rm Edd}$ single-jet systems dominate the parameter space, and at super-Eddington rates dual and flickering jets fill the higher-$q_b$ region. The flickering regime --- our novel result --- is broadest at $\dot{M}_b = 10 \dot{M}_{\rm Edd}$ in the high-$q_b$, high-$e_b$ corner.}
-    \label{fig:mini_fig8_jet_regimes}
-\end{figure*}
+\autoref{fig:mdot_edd} and its discussion assumed a binary accretion rate of $1 \dot{M}_{\rm Edd}$. However, this assumption only controls the baseline of the binary accretion rate. While a different assumed binary accretion rate would not change the profiles nor the relative accretion rates of the components, it would affect the absolute amplitude --- changing the jet-launching behavior. The qualitative tapestry of regimes therefore shifts continuously with $\dot{M}_b$: at sub-Eddington rates ($\dot{M}_b \ll \dot{M}_{\rm Edd}$) no jets launch anywhere in $(e_b, q_b)$ space, while at strongly super-Eddington rates ($\dot{M}_b \gg \dot{M}_{\rm Edd}$) dual jets dominate the parameter space. The fiducial diagram in \autoref{fig:mdot_edd} represents one slice of this continuous family.
 
  \autoref{fig:lambda_tilde_map} displays $\tilde{\lambda}$, which can be written as
 \begin{equation}

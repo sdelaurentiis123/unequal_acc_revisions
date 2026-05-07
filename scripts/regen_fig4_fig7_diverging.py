@@ -83,17 +83,11 @@ print(f"  Cells with <lambda> < 1 (preferential to primary): "
 # Fig 7: <qdot> diverging at qdot=0
 # ============================================================
 
-def eddington(M):
-    G = 6.67430e-8; c = 3.0e10; sigma_T = 6.6524e-25; m_p = 1.6726e-24
-    return (4 * math.pi * G * M * m_p) / (0.1 * sigma_T * c)
-
-qdot = np.load(DATA_DIR / "qdot_data_magda.npy")
-msol = 1.99e33
-M = 2 * 1e7 * msol  # binary total
-mdot_per_M = eddington(M) / M
-qdot_scaled = qdot * mdot_per_M
-
-print(f"  qdot_scaled range: {qdot_scaled.min():.2e} to {qdot_scaled.max():.2e}")
+# Plot in M-dot_b/M_b units (dimensionless rate per binary mass per binary M-dot)
+# matching the v2 paper text. Raw qdot_data_magda.npy values are already in
+# these units; no Eddington rescale needed.
+qdot_scaled = np.load(DATA_DIR / "qdot_data_magda.npy")
+print(f"  qdot range (M-dot_b/M_b units): {qdot_scaled.min():.3f} to {qdot_scaled.max():.3f}")
 
 fig, ax = plt.subplots(figsize=(6, 6))
 # Note: qdot_data_magda.npy is shape (10, 8) with rows from qb=1 to qb=0.1 (top to bottom)
@@ -126,12 +120,12 @@ for i in range(len(qblist)):
         ax.text(
             (np.array(ecclist_mod) + (ecclist_mod[1] - ecclist_mod[0]) / 2)[j],
             qblist_mod[i],
-            f"{v:.2e}",
-            ha="center", va="center", color=text_color, fontsize=6
+            f"{v:.2f}",
+            ha="center", va="center", color=text_color, fontsize=8
         )
 
 cbar = plt.colorbar(im, ax=ax)
-cbar.set_label(r"$\langle \dot{q} \rangle$ ($\dot{M}_b / M_b$ units, centered at 0)", fontsize=10)
+cbar.set_label(r"$\langle \dot{q} \rangle$ [in units of $\dot{M}_b / M_b$]", fontsize=11)
 ax.set_xlabel(r"$e_b$", fontsize=12)
 ax.set_ylabel(r"$q_b$", fontsize=12)
 plt.tight_layout()

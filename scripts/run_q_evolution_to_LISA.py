@@ -175,8 +175,9 @@ fig, axes = plt.subplots(3, 1, figsize=(7, 8), sharex=True,
                          gridspec_kw={'hspace': 0.05})
 
 ax = axes[0]
-ax.loglog(f1, a1/R_S, color='blue', label=r'$(e_0, q_0) = (0.2, 1.0)$', lw=2)
-ax.loglog(f2, a2/R_S, color='red', label=r'$(e_0, q_0) = (0.3, 1.0)$', lw=2)
+# Plot red first (solid), then blue dashed on top so both visible when they overlap
+ax.loglog(f2, a2/R_S, color='red', label=r'$(e_0, q_0) = (0.3, 1.0)$', lw=2.0)
+ax.loglog(f1, a1/R_S, color='blue', linestyle='--', label=r'$(e_0, q_0) = (0.2, 1.0)$', lw=2.0)
 ax.axvspan(LISA_LO, LISA_HI, alpha=0.18, color='gray',
            label='LISA band ($10^{-4}\\!-\\!10^{-1}$ Hz)')
 ax.axhline(1e3, color='gray', ls=':', alpha=0.5, label=r'$a_0 = 10^3 R_S$')
@@ -187,8 +188,8 @@ ax.set_title(r'$(a, e, q)$ evolution from $a_0=10^3 R_S$ to $5 R_S$ '
              fontsize=11)
 
 ax = axes[1]
-ax.semilogx(f1, e1, color='blue', lw=2)
-ax.semilogx(f2, e2, color='red', lw=2)
+ax.semilogx(f2, e2, color='red', lw=2.0)
+ax.semilogx(f1, e1, color='blue', linestyle='--', lw=2.0)
 ax.axvspan(LISA_LO, LISA_HI, alpha=0.18, color='gray')
 ax.axhline(0.45, color='gray', ls=':', alpha=0.5, label=r'gas equil.\ $e=0.45$')
 ax.axhline(0, color='gray', ls=(0, (1, 1)), alpha=0.5)
@@ -197,8 +198,8 @@ ax.set_ylim(-0.02, 0.55)
 ax.legend(loc='upper right', fontsize=9, framealpha=0.85)
 
 ax = axes[2]
-ax.semilogx(f1, q1, color='blue', lw=2)
-ax.semilogx(f2, q2, color='red', lw=2)
+ax.semilogx(f2, q2, color='red', lw=2.0)
+ax.semilogx(f1, q1, color='blue', linestyle='--', lw=2.0)
 ax.axvspan(LISA_LO, LISA_HI, alpha=0.18, color='gray')
 ax.axhline(1.0, color='black', alpha=0.4, label=r'$q=1$')
 ax.set_ylabel(r'$q = M_2/M_1$', fontsize=12)
