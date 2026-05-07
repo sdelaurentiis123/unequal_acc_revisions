@@ -1,195 +1,167 @@
 #!/usr/bin/env python3
 """
-Mini Fig 8 panels per Zoltan #6: jet-regime classification heatmap at multiple
-Mdot_b values, showing how the regime boundaries shift.
+Mini-Fig 8 (jet-regime time-series at multiple Mdot_b) for Zoltan #6.
 
-For each (q_b, e_b) cell, classify into one of:
-  - none (neither BH crosses 1.1 Mdot_Edd sustained)
-  - single-jet (one BH sustainedly above 1.1 Mdot_Edd, other not)
-  - dual-jet (both BHs simultaneously above 1.1 Mdot_Edd for >50 tau)
-  - flickering-jet (both BHs cross threshold but in alternating fashion)
+Two side-by-side 10x8 time-series grids identical in style to the
+existing Fig 8, one at Mdot_b = 0.5 Mdot_Edd and one at Mdot_b = 5 Mdot_Edd.
+Each cell:
+  - black curve: primary's per-Eddington accretion rate
+  - red curve:   secondary's per-Eddington accretion rate
+  - dashed gray: 1.0 Mdot_Edd_BH threshold line
+  - background colored by jet-regime classifier (no eb_idx hack, no overrides):
+      blue   = single
+      purple = dual
+      green  = flickering
+      white  = no jet
 
-Sweep Mdot_b in {0.01, 0.1, 1, 10} Mdot_Edd. Output: 4-panel heatmap, NOT
-time-series (per Zoltan: 'without all the curves and labels').
-
-Accretion file format (from magda_accretion_files/accretion_eb_X_qb_Y.txt,
-columns per magda_accretion_actual_fixed.py):
-  time  sinkid0  sinkid1  mass0  mass1  mass_in0  mass_in1  ...
-  [time = simulation time, /2pi -> orbits]
-  [mass_in0, mass_in1 = mass accreted at this step by each BH]
+Classifier matches existing accretion_eddington.py loose criterion
+(line 605-614) MINUS the eb_idx in {4,7} hand-painting:
+  single:     n_secondary > 1 at >=1 points in [7500, 9500]
+  flickering: n_secondary > 1 at >=2 points AND n_primary > 1.1 at >50 points
+  dual:       n_simul > 50 points
 """
 
-import numpy as np
 import math
+import pickle
+import numpy as np
 import matplotlib.pyplot as plt
-import matplotlib.colors as mcolors
-from matplotlib.colors import ListedColormap
-from matplotlib.patches import Patch
 from pathlib import Path
 
 V3_DIR = Path(__file__).resolve().parent.parent
-ACC_DIR = V3_DIR / "data" / "magda_accretion_files"
+DATA_DIR = Path("/Users/stanislavdelaurentiis/roman_work/metrics_data_new")
 
 qblist = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
 ecclist = [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.8]
 
-THRESHOLD = 1.1  # in M-dot_Edd (per BH)
-DURATION_TAU = 50
+MSOL = 2e33
+M_BIN = 1e7 * MSOL
+TIME_START = 7500
+TIME_END = 9500
 
-def edd_per_M(M):
-    """Eddington rate / M (per unit mass)."""
+# Mdot_b values to render (left panel, right panel)
+MDOT_FACTORS = [0.5, 5.0]
+
+REGIME_COLORS = {
+    'none':       (1.0, 1.0, 1.0, 0.0),       # white (transparent)
+    'single':     (0.0, 0.0, 1.0, 0.18),       # blue
+    'dual':       (0.5, 0.0, 0.5, 0.22),       # purple
+    'flickering': (0.0, 0.7, 0.0, 0.22),       # green
+}
+
+def eddington(M, epsilon=0.1):
     G = 6.67430e-8; c = 3.0e10; sigma_T = 6.6524e-25; m_p = 1.6726e-24
-    return (4 * math.pi * G * m_p) / (0.1 * sigma_T * c)  # M-independent rate per unit mass
-
-_SIM_CACHE = {}
+    return (4 * math.pi * G * M * m_p) / (epsilon * sigma_T * c)
 
 def load_sim(qb, eb):
-    """Load and preprocess once; cached. Returns (mdot0, mdot1, sim_mean_mb, dtmid) or None."""
-    key = (qb, eb)
-    if key in _SIM_CACHE:
-        return _SIM_CACHE[key]
-    fname = ACC_DIR / f"accretion_eb_{eb}_qb_{qb}.txt"
+    fname = DATA_DIR / f"data_eb_{eb}_qb_{qb}"
     if not fname.exists():
-        _SIM_CACHE[key] = None
         return None
-    try:
-        d = np.loadtxt(fname, usecols=(0, 5, 6))
-    except Exception as ex:
-        print(f"  load failed for ({qb}, {eb}): {ex}")
-        _SIM_CACHE[key] = None
+    with open(fname, 'rb') as f:
+        d = pickle.load(f)
+    t = np.asarray(d['time_mdot'])
+    mp = np.asarray(d['mdot1'])  # primary
+    ms = np.asarray(d['mdot2'])  # secondary
+    return t, mp, ms
+
+def classify(mdot_p_frac_window, mdot_s_frac_window):
+    n_s = int((mdot_s_frac_window > 1).sum())
+    n_p = int((mdot_p_frac_window > 1.1).sum())
+    n_simul = int(((mdot_s_frac_window > 1) & (mdot_p_frac_window > 1.1)).sum())
+    regime = 'none'
+    if n_s > 0:
+        regime = 'single'
+    if n_s > 1 and n_p > 50:
+        regime = 'flickering'
+    if n_simul > 50:
+        regime = 'dual'
+    return regime
+
+def compute_panel(qb, eb, mdot_factor):
+    """Return (t_window, mp_frac_window, ms_frac_window, regime) or None."""
+    sim = load_sim(qb, eb)
+    if sim is None:
         return None
-    t_raw = d[:, 0]; mi0 = d[:, 1]; mi1 = d[:, 2]
-    if len(t_raw) < 50:
-        _SIM_CACHE[key] = None
+    t, mp_full, ms_full = sim
+    sim_mean = (mp_full + ms_full).mean()
+    if sim_mean <= 0:
         return None
-    t = t_raw / (2 * math.pi)
-    dt = np.diff(t)
-    mdot0 = mi0[1:] / dt
-    mdot1 = mi1[1:] / dt
-    t_mid = t[1:]
-    cut = t_mid > 3000
-    if cut.sum() < 50:
-        _SIM_CACHE[key] = None
-        return None
-    t_mid = t_mid[cut]; mdot0 = mdot0[cut]; mdot1 = mdot1[cut]
-    sim_mean_mb = (mdot0 + mdot1).mean()
-    if sim_mean_mb <= 0:
-        _SIM_CACHE[key] = None
-        return None
-    median_dt = np.median(np.diff(t_mid))
-    _SIM_CACHE[key] = (mdot0, mdot1, sim_mean_mb, median_dt)
-    return _SIM_CACHE[key]
-
-def classify(qb, eb, mdot_factor):
-    """Classify the (q_b, e_b) sim under the assumption Mdot_b = mdot_factor * Mdot_Edd_total.
-
-    Uses cached time-series data; only the rescaling and run-detection logic
-    is repeated per Mdot_b candidate.
-    """
-    cache = load_sim(qb, eb)
-    if cache is None:
-        return -1
-    mdot0, mdot1, sim_mean_mb, median_dt = cache
-
-    # In sim units, M_bin = 1, so mdot in units of M_bin/tau.
-    # Rescale: total Mdot_b in physical units = mdot_factor * Mdot_Edd(M_bin).
-    # Mdot_Edd(M_bin) per unit binary mass = edd_per_M (constant)
-    # We classify each BH against 1.1 Mdot_Edd of THAT BH.
-    # Mdot_Edd(BH) = (M_BH/M_bin) * Mdot_Edd(M_bin) = (m_frac) * edd_per_M * M_bin
-    # In sim units (M_bin=1): Mdot_Edd_per_BH(sim) = m_frac * mdot_factor / sim_mean_mb (after rescale)
-    # Actually simpler: scale mdot to "Eddington-of-each-BH" ratio.
-    # mdot0 / Mdot_Edd_BH0 = mdot0 / (m0_frac * Mdot_Edd_total)
-    # In sim units, Mdot_Edd_total scales such that mean(mdot0+mdot1) -> mdot_factor * Mdot_Edd_total
-    # i.e. mean(mdot0+mdot1)_sim corresponds to mdot_factor * Mdot_Edd_total in physical units
-    # So Mdot_Edd_total (sim) = mean(mdot0+mdot1)_sim / mdot_factor
-    # Mdot_Edd_per_BH_i (sim) = m_i_frac * Mdot_Edd_total (sim)
-    # mdot_i / Mdot_Edd_per_BH_i = mdot_i / (m_i_frac * sim_mean_mb / mdot_factor)
-    #                            = mdot_factor * mdot_i / (m_i_frac * sim_mean_mb)
-
-    m0_frac = 1.0 / (1 + qb)  # primary mass fraction
-    m1_frac = qb / (1 + qb)   # secondary mass fraction
-
-    mdot0_in_edd = mdot_factor * mdot0 / (m0_frac * sim_mean_mb)
-    mdot1_in_edd = mdot_factor * mdot1 / (m1_frac * sim_mean_mb)
-
-    above_0 = mdot0_in_edd > THRESHOLD
-    above_1 = mdot1_in_edd > THRESHOLD
-    above_both = above_0 & above_1
-
-    samples_per_50 = max(1, int(DURATION_TAU / median_dt))
-
-    def has_run(mask, n):
-        if not mask.any():
-            return False
-        cur = 0; max_run = 0
-        for v in mask:
-            if v: cur += 1
-            else:
-                max_run = max(max_run, cur); cur = 0
-        max_run = max(max_run, cur)
-        return max_run >= n
-
-    sus_0 = has_run(above_0, samples_per_50)
-    sus_1 = has_run(above_1, samples_per_50)
-    sus_both = has_run(above_both, samples_per_50)
-
-    if not sus_0 and not sus_1:
-        return 0  # none
-    if sus_both:
-        return 2  # dual
-    if sus_0 and sus_1:
-        # Both crossed sustainedly but never simultaneously -> flickering
-        return 3
-    return 1  # single
+    scale = mdot_factor * 2 * eddington(M_BIN) / sim_mean
+    mp_phys = mp_full * scale
+    ms_phys = ms_full * scale
+    m_p = (1.0 / (1 + qb)) * M_BIN
+    m_s = (qb / (1 + qb)) * M_BIN
+    mp_frac = mp_phys / eddington(m_p)
+    ms_frac = ms_phys / eddington(m_s)
+    mask = (t >= TIME_START) & (t <= TIME_END)
+    t_w = t[mask]; mp_w = mp_frac[mask]; ms_w = ms_frac[mask]
+    regime = classify(mp_w, ms_w)
+    return t_w, mp_w, ms_w, regime
 
 # ============================================================
-# Run classification grid for each Mdot_b factor
+# Render: 1 figure, 2 side-by-side panels each a 10x8 time-series grid
 # ============================================================
 
-mdot_factors = [3.0, 5.0, 10.0]
-results = {}
+NROWS = len(qblist)  # 10
+NCOLS = len(ecclist) # 8
 
-for mf in mdot_factors:
-    grid = np.full((len(qblist), len(ecclist)), -1, dtype=int)
-    for i, qb in enumerate(qblist):
+fig = plt.figure(figsize=(16.5, 10.5))
+outer = fig.add_gridspec(1, 2, left=0.06, right=0.99, bottom=0.08, top=0.94, wspace=0.07)
+
+YLIM = (3e-3, 3e2)  # padded so tick labels don't crush at panel boundaries
+TIME_LABEL_TICKS = [8000, 9000]
+
+regime_counts = {mf: {'none':0,'single':0,'dual':0,'flickering':0} for mf in MDOT_FACTORS}
+
+for panel_idx, mf in enumerate(MDOT_FACTORS):
+    inner = outer[panel_idx].subgridspec(NROWS, NCOLS, hspace=0, wspace=0)
+
+    # Top centered title for this panel
+    title_ax = fig.add_subplot(outer[panel_idx])
+    title_ax.set_title(rf'$\dot{{M}}_b = {mf:g}\,\dot{{M}}_{{\rm Edd}}$',
+                       fontsize=15, pad=14)
+    title_ax.set_axis_off()
+
+    for i, qb in enumerate(qblist[::-1]):  # i=0 is qb=1.0 at top
         for j, eb in enumerate(ecclist):
-            grid[i, j] = classify(qb, eb, mf)
-    results[mf] = grid
-    counts = {0: (grid==0).sum(), 1: (grid==1).sum(), 2: (grid==2).sum(),
-              3: (grid==3).sum(), -1: (grid==-1).sum()}
-    print(f"Mdot_b = {mf:6.2f} Mdot_Edd: none={counts[0]:>2} single={counts[1]:>2} "
-          f"dual={counts[2]:>2} flickering={counts[3]:>2} missing={counts[-1]:>2}")
+            ax = fig.add_subplot(inner[i, j])
+            res = compute_panel(qb, eb, mf)
+            if res is None:
+                ax.set_facecolor('lightgray')
+            else:
+                t_w, mp_w, ms_w, regime = res
+                regime_counts[mf][regime] += 1
+                ax.plot(t_w, mp_w, color='black', lw=0.5, alpha=0.85)
+                ax.plot(t_w, ms_w, color='red',   lw=0.5, alpha=0.85)
+                ax.axhline(1.0, color='gray', ls='--', lw=0.5, alpha=0.6)
+                ax.set_facecolor(REGIME_COLORS[regime])
 
-# ============================================================
-# Plot 4-panel mini-tapestry
-# ============================================================
+            ax.set_yscale('log')
+            ax.set_ylim(*YLIM)
+            ax.set_xlim(TIME_START, TIME_END)
 
-colors = ['lightgray', 'white', 'tab:blue', 'tab:purple', 'tab:green']
-cmap = ListedColormap(colors)
-bounds = [-1.5, -0.5, 0.5, 1.5, 2.5, 3.5]
-norm = mcolors.BoundaryNorm(bounds, cmap.N)
+            # Only outer rows/cols get visible ticks/labels
+            ax.tick_params(axis='both', which='both',
+                           bottom=(i == NROWS - 1), top=False,
+                           left=(panel_idx == 0 and j == 0), right=False,
+                           labelbottom=(i == NROWS - 1),
+                           labelleft=(panel_idx == 0 and j == 0),
+                           labelsize=8, length=2)
+            if i == NROWS - 1:
+                ax.set_xticks(TIME_LABEL_TICKS)
+                ax.set_xticklabels([str(v) for v in TIME_LABEL_TICKS])
+                ax.set_xlabel(rf'$e_b$={eb:.1f}', fontsize=10, labelpad=3)
+            else:
+                ax.set_xticks([])
+            if panel_idx == 0 and j == 0:
+                ax.set_ylabel(rf'$q_b$={qb:.1f}', fontsize=10, labelpad=3)
 
-fig, axes = plt.subplots(1, 3, figsize=(11, 4.2), sharey=True,
-                         gridspec_kw={'wspace': 0.05})
-for ax, mf in zip(axes, mdot_factors):
-    ax.imshow(results[mf], cmap=cmap, norm=norm, aspect='auto', origin='lower',
-              extent=[min(ecclist), max(ecclist), 0, max(qblist)])
-    ax.set_title(rf'$\dot{{M}}_b = {mf:g}\,\dot{{M}}_{{\rm Edd}}$', fontsize=13)
-    ax.set_xlabel(r'$e_b$', fontsize=14)
-    ax.tick_params(labelsize=11)
 
-axes[0].set_ylabel(r'$q_b$', fontsize=14)
+# Print classifier counts for sanity check
+for mf in MDOT_FACTORS:
+    c = regime_counts[mf]
+    print(f"Mdot_b = {mf:.2f} Mdot_Edd: none={c['none']:>2} single={c['single']:>2} "
+          f"dual={c['dual']:>2} flickering={c['flickering']:>2}")
 
-legend_handles = [
-    Patch(facecolor='white', edgecolor='black', label='no jet'),
-    Patch(facecolor='tab:blue',   label='single'),
-    Patch(facecolor='tab:purple', label='dual'),
-    Patch(facecolor='tab:green',  label='flickering'),
-]
-fig.legend(handles=legend_handles, loc='lower center', ncol=4, fontsize=10,
-           bbox_to_anchor=(0.5, -0.02))
-
-plt.tight_layout(rect=[0, 0.05, 1, 1])
 out = V3_DIR / "mini_fig8_jet_regimes.pdf"
-plt.savefig(out, bbox_inches='tight', dpi=150)
+plt.savefig(out, bbox_inches='tight', dpi=140)
 print(f"\nSaved {out}")
