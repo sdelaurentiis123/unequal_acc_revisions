@@ -1,0 +1,178 @@
+Hi Zoltan,
+
+Attached is v3 of the unequal-accretion paper, addressing the comments
+you sent in March 2025. Two PDFs:
+
+  v3_clean.pdf — the publish-ready version, 14 pages.
+  v3_diff.pdf  — same content with red strikethrough = v2 deletions,
+                 blue underline = v3 additions, so you can see at a glance
+                 what changed.
+
+I want to walk you through the eight numbered comments and a few of the
+larger red-ink items. Detailed line-by-line tracker is at
+comment_tracker.md and the full BEFORE/AFTER markdown diff is at
+CHANGES.md, both in the repo. Repo:
+
+  git@github-personal:sdelaurentiis123/unequal_acc_revisions.git
+
+
+THE EIGHT NUMBERED COMMENTS
+
+#1 (Roman-paper figures inline). Your "even if it is a duplication" point
+   was clear. Roman's Table 1 (locked/precessing grid) and his Figure 18
+   (cavity a/e heatmap) are now inline in §3.1, immediately at first
+   cross-reference. The appendix is gone. The two reproductions still
+   credit Roman as "DeLaurentiis & Rafikov, in preparation."
+
+#2 (one-to-one mapping logic was confusing). You correctly noticed v2
+   conflated two different mappings. v3 distinguishes them explicitly:
+   "time-variability mapping" (mine, V/S ↔ L/P) vs. "time-averaged
+   framework" (Magda's three regimes). I added a cross-reference to her
+   Section 3.5, which she had asked for in a commented-out thread that
+   didn't make it into v2.
+
+#3 (diverging colormaps for Figs 4 and 7). Both recolored. Fig 5 (was
+   Fig 4) and Fig 9 (was Fig 7) are now red/blue diverging seismic
+   centered at λ=1 and q̇=0 respectively. Sign is now visually obvious;
+   the 9 cells where ⟨λ⟩<1 stand out in blue.
+
+#4 (cartoon + Fourier panels). I added the cartoon (new Fig 7, TikZ).
+   The Fourier panels were deferred for time — the methodology bridge
+   I wrote for #5b explains the period match qualitatively without the
+   FFT figure. Tell me if you want the panels and I'll add them.
+
+#5b (justify the apocenter→precession inference). New paragraph in
+   §3.1.1 makes the argument explicit, in plain language: 10 τ_b cadence
+   is fast enough vs. the precession period; r_1 and r_2 share the same
+   FFT period in every simulation (which is what we'd expect if both are
+   sampling the same precessing structure from different sides); that
+   shared period matches λ(t)'s. The period match licenses the inference.
+
+#6 (Ṁ_b dependence — "this might be the most interesting take-away").
+   Initially I built a 4-panel mini-figure but the sub-Eddington panels
+   were entirely empty. After looking at it I dropped the figure entirely
+   and instead added one sentence in §4.1: "the qualitative tapestry of
+   regimes shifts continuously with Ṁ_b: at sub-Eddington rates no jets
+   launch anywhere, while at strongly super-Eddington rates dual jets
+   dominate. Fig 8 is one slice of this continuous family." Captures
+   your point without burning a figure.
+
+#7 + #8 (LISA prediction tone-down — your main concern). This is the
+   change that needs the most attention from you. The §4.2 closing block
+   is rewritten with three paragraphs. The headline:
+
+     - The bump claim is kept, with a stronger physical justification:
+       Peters' formulas conserve q at leading order during inspiral, so
+       the q ≈ 0.99 plateau established in the gas phase is preserved
+       through inspiral, not driven back to 1.
+
+     - I verified this by extending the integration of Eq. 12 from
+       a₀ = 10³ R_S all the way to a = 5 R_S (well into the LISA band).
+       q stays at ≈0.99 even as e is circularized to ≈0 by GW. The
+       integration code is in scripts/run_q_evolution_to_LISA.py.
+
+     - Two new caveats stated explicitly in the prose: (i) Magda's
+       lookup is gridded at Δq_b = 0.1, so we don't have direct
+       simulation data in q ∈ (0.95, 1.0) — the regime our binary
+       lives in during inspiral; (ii) the cavity reorientation
+       timescale, which I claimed in §3.2 proceeds on the apsidal
+       precession timescale, hasn't been quantitatively compared to
+       the gas q-evolution timescale.
+
+     - Three open questions stated explicitly (these are your concerns
+       from #7): population fraction passing through (e=0.2, q=1);
+       LISA's 0.5% precision floor relative to Δq ~ 0.01; the
+       ~100 expected MBHB events.
+
+   I think this hedges your concerns without conceding the underlying
+   physics. Push back if you disagree.
+
+   Conclusion item (vii) was rewritten with your drafted "no long-lived
+   q=1, e=0.2 binaries... will evolve to q<1" phrasing. Conclusion (iv)
+   was rewritten per your "way too much to claim, legally so, causally"
+   verdict — now states the empirical period match cleanly and notes
+   what the phase mismatch rules out, no more.
+
+
+WHAT ELSE GOT DONE
+
+Causal-claim sweep across the paper: replaced "determines / drives /
+regulates / tied to" with "tracks / paces / consistent with" in the
+abstract and at three other locations.
+
+Notation cleanup: q_b ≤ 1 convention is now explicit in §3.2, including
+the convention-inversion when q crosses 1 (your "heh? what do you mean?"
+annotation). σ ≈ 10⁻² estimate now justified ("estimated from the variance
+of q̇(t) divided by the integration duration") per your annotation 7.8.
+
+Disk realignment timescale: added with your own "typical disk precession
+timescale" wording verbatim.
+
+Geometric-thick-disk funnel: added two sentences in §4.1 incorporating
+your suggested physics about the funnel collimating the jet.
+
+Tidal-factor sentence in §3.1.1: tightened "tidal potential" to "tidal
+field" so the M/r³ scaling is unambiguous, and added the actual
+r_1/r_2 ≈ 3.4 measured from the (0.2, 0.1) snapshot. The 4-5× factor
+falls out cleanly.
+
+Phase-argument pedagogy in §3.1.1: states the naive prediction (r_1 in
+phase, r_2 anti-phase) explicitly before showing where it breaks. Closes
+your "I didn't understand the reason" annotation.
+
+Jet timescale + threshold justification: 1.1 Ṁ_Edd cutoff now justified
+via the funnel collimation argument; 50 τ duration now justified via
+inner-disk dynamical time.
+
+New citations per your annotations: Peters 1964 at the GW equations + Fig
+13 caption; Springel 2010 (AREPO); Ruiz/Shapiro 2023, Most/Wang 2024,
+Ennoggi 2025 for GR-MHD binary jets (framed as complementary to our
+hydrodynamic threshold-crossing).
+
+Affiliation: I added Columbia Physics + ISTA per your "+ Physics + ISTA"
+annotation (and per your most recent Bartos & Haiman 2025 paper). Tell
+me if you want ISTA listed first as primary — currently listed third.
+Email kept as zh2007@columbia.edu; switch to ISTA email if you'd prefer.
+
+MNRAS sentence-case section titles: 11 headings updated.
+
+Bug fixes: removed two stray annotation macros (\sod and \mss) that were
+rendering in the v2 PDF; fixed phantom citations Miranda2015 and
+Duffell2024 that didn't exist in the bibliography; fixed Blandford-Znajek,
+Eedd, and aopocenter typos; cleaned 10 duplicate bib entries.
+
+Acknowledgements section now in place. NASA ATP and LISA Preparatory
+Science grant numbers are placeholder — I need those from you. Ginsburg
+HPC cluster acknowledgement added per Columbia CUIT documentation.
+
+
+WHAT I DEFERRED FOR TIME (full list in comment_tracker.md)
+
+The biggest item I deferred is the Fig 8 axis-label rewrite (your
+annotations 9.1, 9.3 — you wrote the labels in by hand on the marked-up
+PDF). That requires rewriting accretion_eddington.py end-to-end and is
+roughly a full day of work. If you want it before submission, tell me.
+
+Smaller deferrals: Fig 1 layout (panels touching), Fig 5 aspect ratio,
+Fig 6 panel concatenation, Fig 10 detection-region annotations, Fourier
+panels for #4b, citation hunt for Barnes & Hernquist 1992 + D'Orazio 2013
+in periodogram-of-q context, page 1-2 small prose sweeps, (e_b, q_b)
+ordering paper-wide.
+
+
+WHAT I NEED FROM YOU
+
+  1. NASA ATP grant number (placeholder in Acknowledgements).
+  2. LISA Preparatory Science grant number (placeholder).
+  3. Sign-off on the §4.2 LISA tone-down framing — does the
+     sharpen-with-caveats approach work, or do you want it pulled
+     back further?
+  4. Affiliation order: ISTA first, or Columbia first?
+  5. Whether to do any of the deferred items before submission.
+
+
+Sorry this took as long as it did. The paper is in a much better state
+than v2 and I think it's defensible. Looking forward to your read.
+
+Best,
+Stan
