@@ -14,6 +14,7 @@ import math
 import pickle
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
+import matplotlib.patheffects as path_effects
 from pathlib import Path
 
 V3_DIR = Path(__file__).resolve().parent.parent
@@ -37,13 +38,18 @@ for i, qb in enumerate(qblist):
         lambda_vals[i, j] = np.mean(meds)
 
 fig, ax = plt.subplots(figsize=(8, 6))
-norm = mcolors.TwoSlopeNorm(vmin=lambda_vals.min(), vcenter=1.0, vmax=lambda_vals.max())
+# Sequential colormap on |log10(<lambda>)|: emphasize MAGNITUDE of preferential
+# accretion (deviation from lambda=1), not the direction. The 9 cells with
+# <lambda> < 1 are a mix of (a) q_b=1 sims where symmetry breaking lands on
+# the apocenter-defined-primary by convention and (b) unequal-mass dimspots
+# (e.g., (e_b, q_b) = (0.5, 0.2) at <lambda> = 0.93) where the asymmetry is
+# anomalous — see body text.
+log_mag = np.abs(np.log10(lambda_vals))
 c = ax.imshow(
-    lambda_vals,
+    log_mag,
     aspect="auto",
     origin="lower",
-    cmap="seismic",   # red = preferential to secondary, blue = preferential to primary
-    norm=norm,
+    cmap="viridis",
     extent=[min(ecclist), max(ecclist), 0, max(qblist)],
 )
 
@@ -54,21 +60,27 @@ ax.set_yticks(qblist_mod)
 ax.set_xticklabels(ecclist)
 ax.set_yticklabels(qblist)
 
-# In-cell value labels (black text on light cells, white on saturated)
+# In-cell value labels: show the actual <lambda> (signed), with a black stroke
+# around white text so it's legible against any cell color.
 for i in range(len(qblist)):
     for j in range(len(ecclist)):
         v = lambda_vals[i, j]
-        # Heuristic: text color flips on light vs dark cells
-        text_color = "black" if 0.7 < v < 2.0 else "white"
-        ax.text(
+        txt = ax.text(
             (np.array(ecclist_mod) + (ecclist_mod[1] - ecclist_mod[0]) / 2)[j],
             qblist_mod[i],
             f"{v:.2f}",
-            ha="center", va="center", color=text_color, fontsize=8
+            ha="center", va="center", color="white", fontsize=8,
         )
+        txt.set_path_effects([
+            path_effects.Stroke(linewidth=1.4, foreground="black"),
+            path_effects.Normal(),
+        ])
 
 cbar = plt.colorbar(c, ax=ax)
-cbar.set_label(r"$\langle \lambda \rangle = \langle \dot{M}_2 / \dot{M}_1 \rangle$ (centered at $\lambda=1$)", fontsize=12)
+cbar.set_label(
+    r"$|\log_{10}\langle\lambda\rangle|$ (magnitude of preferential accretion)",
+    fontsize=12,
+)
 ax.set_xlabel(r"$e_b$", fontsize=12)
 ax.set_ylabel(r"$q_b$", fontsize=12)
 plt.tight_layout()
