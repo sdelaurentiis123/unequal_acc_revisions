@@ -460,36 +460,38 @@ As discussed in \autoref{sec:methods}, we use the dominant Fourier modes of the 
     \begin{tikzpicture}[scale=2.0]
       % --- cavity ellipse, locked orientation, secondary side closer ---
       \draw[thick, black] (0,0) ellipse (1.4 and 1.0);
-      \node[black, anchor=south] at (0, 1.10) {\footnotesize CBD inner edge};
 
-      % --- center of mass: X marker (less dramatic than a filled dot) ---
-      \draw[black, thick] (-0.04, -0.04) -- (0.04, 0.04);
-      \draw[black, thick] (-0.04, 0.04) -- (0.04, -0.04);
-      \node[black, anchor=north west, font=\scriptsize] at (0.02, -0.05) {COM};
+      % "CBD inner edge" label placed inside the ellipse, top
+      \node[black, anchor=center, font=\scriptsize\itshape] at (0, 0.78) {CBD inner edge};
 
-      % --- binary at apocenter, q_b = 0.1, e_b = 0.2 ---
-      % primary at d_1 = -0.109a, secondary at d_2 = +1.091a
-      \fill[blue!70!black] (-0.109, 0) circle (0.06);
-      \node[blue!70!black, anchor=east, font=\scriptsize] at (-0.18, 0.0) {$M_1$};
-      \fill[red!70!black]  (+1.091, 0) circle (0.030);
-      \node[red!70!black, anchor=south, font=\scriptsize] at (+1.091, 0.05) {$M_2$};
-
-      % --- r_1 vector: primary to nearest cavity wall on its (far) side ---
-      \draw[<->, blue!70!black, thick] (-0.109, 0.18) -- (-1.4, 0.18);
-      \node[blue!70!black, anchor=south, font=\scriptsize] at (-0.75, 0.20) {$r_1$};
-
-      % --- r_2 vector: secondary to nearest cavity wall on its (near) side ---
-      \draw[<->, red!70!black, thick] (+1.091, -0.20) -- (+1.4, -0.20);
-      \node[red!70!black, anchor=north, font=\scriptsize] at (+1.25, -0.22) {$r_2$};
-
-      % --- binary axis line ---
+      % --- binary axis (dashed, drawn first so it's at the back) ---
       \draw[gray, dashed, thin] (-0.109, 0) -- (+1.091, 0);
 
-      % --- precession indicator ---
-      \draw[->, gray!60!black, thick] (-0.7, 0.85) arc[start angle=130, end angle=90, x radius=1.4, y radius=1.0];
-      \node[gray!60!black, anchor=west, font=\scriptsize] at (-1.1, 0.95) {precession};
+      % --- r_1 and r_2 arrows on the binary axis (y=0), drawn before dots so
+      %     they sit BEHIND the markers ---
+      \draw[<->, blue!70!black, thick] (-0.109, 0) -- (-1.4, 0);
+      \draw[<->, red!70!black, thick]  (+1.091, 0) -- (+1.4, 0);
+
+      % --- center of mass: X marker (drawn after arrow so visible) ---
+      \draw[black, thick] (-0.04, -0.04) -- (0.04, 0.04);
+      \draw[black, thick] (-0.04, 0.04) -- (0.04, -0.04);
+
+      % --- BH dots drawn LAST so they sit on top of arrows ---
+      \fill[blue!70!black] (-0.109, 0) circle (0.06);
+      \fill[red!70!black]  (+1.091, 0) circle (0.030);
+
+      % --- Labels: M_1, M_2 ABOVE the dots; COM, r_1, r_2 BELOW the axis ---
+      \node[blue!70!black, anchor=south, font=\scriptsize] at (-0.109, 0.07) {$M_1$};
+      \node[red!70!black,  anchor=south, font=\scriptsize] at (+1.091, 0.05) {$M_2$};
+      \node[black, anchor=north, font=\scriptsize] at (0, -0.10) {COM};
+      \node[blue!70!black, anchor=north, font=\scriptsize] at (-0.75, -0.03) {$r_1$};
+      \node[red!70!black,  anchor=north, font=\scriptsize] at (+1.25, -0.03) {$r_2$};
+
+      % --- precession indicator: outside the ellipse, top ---
+      \draw[->, gray!60!black, thick] (-0.50, 1.10) arc[start angle=110, end angle=70, radius=1.5];
+      \node[gray!60!black, anchor=south, font=\scriptsize\itshape] at (0, 1.20) {precession};
     \end{tikzpicture}
-    \caption{Schematic of the cavity geometry at apocenter for the locked-CBD case, illustrated for an unequal-mass binary with $q_b \ll 1$. The CBD inner edge (black ellipse) is closer to the secondary BH ($M_2$, red) on one side; the primary ($M_1$, blue) is farther from its nearby cavity wall. Closest distances from each BH to the wall are $r_1$ and $r_2$, with $r_1 > r_2$ in the locked configuration shown. As the disk precesses (curved gray arrow), the ellipse's major axis rotates, and the orientations of $r_1$ and $r_2$ change accordingly.}
+    \caption{Schematic of the cavity geometry at apocenter for the locked-CBD case, illustrated for an unequal-mass binary with $q_b \ll 1$. The CBD inner edge (black ellipse) is closer to the secondary BH ($M_2$, red) on one side; the primary ($M_1$, blue) is farther from its nearby cavity wall. Closest distances from each BH to the wall are $r_1$ and $r_2$, with $r_1 > r_2$ in the locked configuration shown. As the disk precesses (curved gray arrow above the ellipse), the ellipse's major axis rotates, and the orientations of $r_1$ and $r_2$ change accordingly.}
     \label{fig:cavity_cartoon}
 \end{figure}
 
@@ -672,18 +674,11 @@ Per \autoref{fig:qdot_heatmap}, we solve the initial value problem for two equal
 
 In \autoref{fig:evolution_plot} we display the evolution of the two binary's $e(t)$ and $q(t)$ in the upper and lower panels, respectively. Our numerical integration is performed at $a_0 = 10^3 R_S$, where the gas-driven terms $\dot{a}_{\rm gas}$ and $\dot{e}_{\rm gas}$ dominate over the GW terms \citep{peters_64}, and the binary settles toward the gas-driven equilibrium $e \approx 0.45$ reported by \citet{duffell_dorazio_2020, zrake_2021, siwek_cbdorbevol, Siwek_mbbh_pop_24}. We find that the two binaries initialized at $(e_b, q_b) = (0.2, 1.0)$ and $(0.3, 1.0)$ both evolve away from $q_b = 1$, reaching $(e, q) = (0.45, 0.991)$ and $(0.45, 0.998)$ respectively, before further evolution.
 
-These plateau values are not the final pre-merger state. As the binary inspirals and $a$ shrinks, the GW timescale $\tau_{\rm GW} \propto a^4$ \citep{peters_64} eventually becomes shorter than the gas-driven evolution timescale, and GW radiation begins to dominate the orbital dynamics. Crucially, the Peters quadrupole formulas conserve the mass ratio $q$ at leading order: GW radiation drives $a \to 0$ and $e \to 0$ but does not directly change $q$. The mass-ratio offset established during the gas-dominated phase is therefore preserved through inspiral rather than driven back toward unity. We confirm this by extending the integration of \autoref{eqn:num_integ} for the $(e_b, q_b) = (0.2, 1.0)$ and $(0.3, 1.0)$ cases (\autoref{fig:q_evolution_to_LISA}). During the gas-dominated phase the binary reaches $(e, q) \approx (0.45, 0.99)$ for both cases. As GW takes over, $e$ is rapidly circularized to $e \approx 0$ but $q$ stays essentially constant. A scan over initial separation finds that the bump effect activates by $a_0 \gtrsim 250 R_S$ and reaches its asymptotic value by $a_0 \gtrsim 400 R_S$; for an $M_{\rm tot} = 10^7 M_\odot$ binary entering inspiral with $\dot{M}_b = 100 \dot{M}_{\rm Edd}$, the asymptotic mass-ratio offsets at LISA-band entry are $\Delta q \approx 0.014$ and $\Delta q \approx 0.008$ for the two cases, respectively.
+These plateau values are not the final pre-merger state. As the binary inspirals and $a$ shrinks, the GW timescale $\tau_{\rm GW} \propto a^4$ \citep{peters_64} eventually becomes shorter than the gas-driven evolution timescale, and GW radiation begins to dominate the orbital dynamics. Crucially, the Peters quadrupole formulas conserve the mass ratio $q$ at leading order: GW radiation drives $a \to 0$ and $e \to 0$ but does not directly change $q$. The mass-ratio offset established during the gas-dominated phase is therefore preserved through inspiral rather than driven back toward unity. We have verified this by extending the integration of \autoref{eqn:num_integ} for the $(e_b, q_b) = (0.2, 1.0)$ and $(0.3, 1.0)$ cases from $a_0 = 10^3 R_S$ down to $a = 5 R_S$: GW circularizes $e$ to $\approx 0$ before LISA-band entry, but $q$ remains essentially constant at the gas-phase plateau. A scan over initial separation finds that the bump effect activates by $a_0 \gtrsim 250 R_S$ and reaches its asymptotic value by $a_0 \gtrsim 400 R_S$; for an $M_{\rm tot} = 10^7 M_\odot$ binary entering inspiral with $\dot{M}_b = 100 \dot{M}_{\rm Edd}$, the asymptotic mass-ratio offsets at LISA-band entry are $\Delta q \approx 0.014$ and $\Delta q \approx 0.008$ for the two cases, respectively.
 
 Two caveats apply to this prediction. First, the simulation suite that supplies $\dot{q}_{\rm gas}$ is gridded at $\Delta q_b = 0.1$ resolution. Once $q$ drifts from 1.0 to ${\sim}0.99$ during inspiral, our integration samples the $q_b = 0.9$ row of the lookup table, which corresponds to simulations of binaries that had $q_b = 0.9$ throughout --- not binaries that started at $q = 1$ and drifted. We do not have direct simulation data in $q \in (0.95, 1.0)$. Second, the cavity geometry depends on the binary's history: a binary that started at $q = 1$ has a CBD locked toward the spatially-defined ``secondary'' (an apocenter convention), whereas a $q_b = 0.9$ simulation has a CBD locked toward the lower-mass BH from the start. As $q$ drifts past unity, the cavity must reorient, which we argued in \autoref{sec:mass_ratio} proceeds on the disk's apsidal precession timescale --- a quantity we have not compared to the gas-driven $q$-evolution timescale. If the cavity reorients faster than $q$ evolves, the lookup remains applicable; if slower, the relevant $\dot{q}_{\rm gas}$ during inspiral could differ from what our integration assumes. Resolving these caveats would require new simulations at finer $q$-grid resolution and live-binary runs through a sustained $\dot{q} \neq 0$ phase, both of which we leave to future work.
 
 Subject to these caveats, we predict that LISA-detectable binaries that passed through $(e_b, q_b) = (0.2, 1.0)$ or $(0.3, 1.0)$ during the gas-dominated phase of their formation should appear at $q \approx 0.99$ rather than at $q = 1$, producing a relative dearth of strictly $q = 1$ systems in the LISA mass-ratio distribution. Whether this leaves a measurable population-level signature depends on three additional open questions: (i) the fraction of MBHB progenitors that pass through the relevant region of $(e_b, q_b)$ parameter space and the duty cycle of the $q \neq 1$ phase across the population, (ii) LISA's expected ${\sim}0.5\%$ precision in $q$ \citep{Mangiagli_2020} relative to the $\Delta q \sim 0.01$ deviation, and (iii) the expected $\mathcal{O}(100)$ MBHB events over the LISA mission. Confirming this prediction would require both a careful population synthesis accounting for the duty cycle of the $q \neq 1$ phase and a forward-modelling of LISA's detection sensitivity for a near-equal-mass population.
-
-\begin{figure}
-    \centering
-    \includegraphics[width=1\linewidth]{q_evolution_to_LISA.pdf}
-    \caption{Extended integration of \autoref{eqn:num_integ} from $a_0 = 10^3 R_S$ down to $a = 5 R_S$ for the $(e_b, q_b) = (0.2, 1.0)$ (blue) and $(0.3, 1.0)$ (red) cases, with $M_{\rm tot} = 10^7 M_\odot$ and $\dot{M}_b = 100 \dot{M}_{\rm Edd}$. Top: semi-major axis vs GW frequency. Middle: eccentricity vs frequency, showing initial growth toward the gas-driven equilibrium $e \approx 0.45$ followed by GW circularization. Bottom: mass ratio vs frequency. The mass-ratio deviation from unity established during the gas-dominated phase is preserved through GW-dominated inspiral and persists into the LISA frequency band (gray, $10^{-4}$ to $10^{-1}$ Hz). The minor step in $q(t)$ around $f_{\rm GW} \sim 2 \times 10^{-6}$ Hz reflects the discrete grid resolution of the $\dot{q}_{\rm gas}$ lookup table (rounded to $\Delta q_b = 0.1$); the qualitative result is unchanged.}
-    \label{fig:q_evolution_to_LISA}
-\end{figure}
 
 \section{Summary and conclusions}\label{sec:conclusion}
 This paper has provided the most extensive report on the preferential accretion $\lambda \equiv \frac{\dot{M}_2}{\dot{M}_1}$ and mass ratio rate of change $\dot{q}$ for SMBBHs embedded in CBDs. In addition to calculating quantities, we provide novel insight into the behavior of these values over time and their dependence on $q_b$ and $e_b$. We also conduct a preliminary investigation into how the CBD regulates preferential accretion. We summarize our key findings below.
@@ -704,7 +699,7 @@ We conclude by noting that the mechanism behind preferential accretion is more c
 
 
 \section*{Acknowledgements}
-The authors thank the anonymous referees for helpful comments. ZH acknowledges support from NASA ATP grant [INSERT NUMBER] and LISA Preparatory Science grant [INSERT NUMBER]. SOD acknowledges support from [INSERT IF APPLICABLE]. MS acknowledges support from [INSERT IF APPLICABLE]. RR acknowledges support from [INSERT IF APPLICABLE]. The simulations were carried out on [INSERT CLUSTER] at [INSERT INSTITUTION].
+The authors thank the anonymous referees for helpful comments. ZH acknowledges support from NASA ATP grant [INSERT NUMBER] and LISA Preparatory Science grant [INSERT NUMBER]. We acknowledge computing resources from Columbia University's Shared Research Computing Facility, in particular the Ginsburg HPC cluster.
 
 \section*{Data Availability}
 The data underlying this article will be shared on reasonable request to the corresponding author.
