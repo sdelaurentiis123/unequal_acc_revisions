@@ -60,21 +60,16 @@ ax.set_yticks(qblist_mod)
 ax.set_xticklabels(ecclist)
 ax.set_yticklabels(qblist)
 
-# In-cell value labels: show the actual <lambda> (signed), with a black stroke
-# around white text so it's legible against any cell color.
+# In-cell value labels: plain white text.
 for i in range(len(qblist)):
     for j in range(len(ecclist)):
         v = lambda_vals[i, j]
-        txt = ax.text(
+        ax.text(
             (np.array(ecclist_mod) + (ecclist_mod[1] - ecclist_mod[0]) / 2)[j],
             qblist_mod[i],
             f"{v:.2f}",
             ha="center", va="center", color="white", fontsize=8,
         )
-        txt.set_path_effects([
-            path_effects.Stroke(linewidth=1.4, foreground="black"),
-            path_effects.Normal(),
-        ])
 
 cbar = plt.colorbar(c, ax=ax)
 cbar.set_label(
