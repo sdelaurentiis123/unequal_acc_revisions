@@ -41,48 +41,55 @@ def edd_per_M(M):
     G = 6.67430e-8; c = 3.0e10; sigma_T = 6.6524e-25; m_p = 1.6726e-24
     return (4 * math.pi * G * m_p) / (0.1 * sigma_T * c)  # M-independent rate per unit mass
 
-def classify(qb, eb, mdot_factor):
-    """Classify the (q_b, e_b) sim under the assumption Mdot_b = mdot_factor * Mdot_Edd_total.
+_SIM_CACHE = {}
 
-    The accretion file gives mass_in per timestep in simulation units (M_bin)
-    over time in units (2pi tau). Convert to M-dot in M_bin/tau, then rescale
-    so that <M-dot_b> = mdot_factor * Mdot_Edd_total (relative to binary M).
-    Then check threshold 1.1 * Mdot_Edd_per_BH for each BH.
-    """
+def load_sim(qb, eb):
+    """Load and preprocess once; cached. Returns (mdot0, mdot1, sim_mean_mb, dtmid) or None."""
+    key = (qb, eb)
+    if key in _SIM_CACHE:
+        return _SIM_CACHE[key]
     fname = ACC_DIR / f"accretion_eb_{eb}_qb_{qb}.txt"
     if not fname.exists():
-        return -1
+        _SIM_CACHE[key] = None
+        return None
     try:
         d = np.loadtxt(fname, usecols=(0, 5, 6))
     except Exception as ex:
         print(f"  load failed for ({qb}, {eb}): {ex}")
-        return -1
-
-    t_raw = d[:, 0]
-    mi0 = d[:, 1]
-    mi1 = d[:, 2]
+        _SIM_CACHE[key] = None
+        return None
+    t_raw = d[:, 0]; mi0 = d[:, 1]; mi1 = d[:, 2]
     if len(t_raw) < 50:
-        return -1
-
-    # time -> tau_b (orbital units)
+        _SIM_CACHE[key] = None
+        return None
     t = t_raw / (2 * math.pi)
-
-    # mdot per BH in sim units (M_bin / tau)
     dt = np.diff(t)
     mdot0 = mi0[1:] / dt
     mdot1 = mi1[1:] / dt
     t_mid = t[1:]
-
-    # Cut early instability (first 3000 tau)
     cut = t_mid > 3000
     if cut.sum() < 50:
-        return -1
+        _SIM_CACHE[key] = None
+        return None
     t_mid = t_mid[cut]; mdot0 = mdot0[cut]; mdot1 = mdot1[cut]
-
-    # Sim-units total mean
     sim_mean_mb = (mdot0 + mdot1).mean()
     if sim_mean_mb <= 0:
+        _SIM_CACHE[key] = None
+        return None
+    median_dt = np.median(np.diff(t_mid))
+    _SIM_CACHE[key] = (mdot0, mdot1, sim_mean_mb, median_dt)
+    return _SIM_CACHE[key]
+
+def classify(qb, eb, mdot_factor):
+    """Classify the (q_b, e_b) sim under the assumption Mdot_b = mdot_factor * Mdot_Edd_total.
+
+    Uses cached time-series data; only the rescaling and run-detection logic
+    is repeated per Mdot_b candidate.
+    """
+    cache = load_sim(qb, eb)
+    if cache is None:
         return -1
+    mdot0, mdot1, sim_mean_mb, median_dt = cache
 
     # In sim units, M_bin = 1, so mdot in units of M_bin/tau.
     # Rescale: total Mdot_b in physical units = mdot_factor * Mdot_Edd(M_bin).
@@ -109,7 +116,6 @@ def classify(qb, eb, mdot_factor):
     above_1 = mdot1_in_edd > THRESHOLD
     above_both = above_0 & above_1
 
-    median_dt = np.median(np.diff(t_mid))
     samples_per_50 = max(1, int(DURATION_TAU / median_dt))
 
     def has_run(mask, n):
@@ -140,7 +146,7 @@ def classify(qb, eb, mdot_factor):
 # Run classification grid for each Mdot_b factor
 # ============================================================
 
-mdot_factors = [0.01, 0.1, 1.0, 10.0]
+mdot_factors = [3.0, 5.0, 10.0]
 results = {}
 
 for mf in mdot_factors:
@@ -163,14 +169,16 @@ cmap = ListedColormap(colors)
 bounds = [-1.5, -0.5, 0.5, 1.5, 2.5, 3.5]
 norm = mcolors.BoundaryNorm(bounds, cmap.N)
 
-fig, axes = plt.subplots(1, 4, figsize=(13, 3.6), sharey=True)
+fig, axes = plt.subplots(1, 3, figsize=(11, 4.2), sharey=True,
+                         gridspec_kw={'wspace': 0.05})
 for ax, mf in zip(axes, mdot_factors):
     ax.imshow(results[mf], cmap=cmap, norm=norm, aspect='auto', origin='lower',
               extent=[min(ecclist), max(ecclist), 0, max(qblist)])
-    ax.set_title(rf'$\dot{{M}}_b = {mf:g} \, \dot{{M}}_{{\rm Edd}}$', fontsize=11)
-    ax.set_xlabel(r'$e_b$', fontsize=11)
+    ax.set_title(rf'$\dot{{M}}_b = {mf:g}\,\dot{{M}}_{{\rm Edd}}$', fontsize=13)
+    ax.set_xlabel(r'$e_b$', fontsize=14)
+    ax.tick_params(labelsize=11)
 
-axes[0].set_ylabel(r'$q_b$', fontsize=11)
+axes[0].set_ylabel(r'$q_b$', fontsize=14)
 
 legend_handles = [
     Patch(facecolor='white', edgecolor='black', label='no jet'),
