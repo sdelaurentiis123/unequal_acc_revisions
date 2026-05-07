@@ -35,25 +35,25 @@ This document maps every Zoltan comment from his March 24, 2025 marked-up PDF to
 | 1.2 Define λ in abstract | ✅ | 34a60d9 | DIFF 21: λ ≡ Ṁ_2/Ṁ_1, q̇ ≡ d/dt(M_2/M_1) explicit definitions in abstract |
 | 1.3 Tighten abstract phrasing | ✅ | 34a60d9 | Rolled into DIFF 21 |
 | 1.4 "as functions of e_b and q_b" | ✅ | 34a60d9 | Rolled into DIFF 21 |
-| 1.5 "and binary stars" context | 🔴 | — | Not done (Day 9 sweep skipped for time) |
-| 1.6 Barnes & Hernquist citation | 🔴 | — | Not done (citation hunt skipped for time) |
+| 1.5 "and binary stars" context | ✅ | (final pass) | Added "the same disc-mediated dynamics also operate in binary stars and protoplanetary systems" lead-in §1 |
+| 1.6 Barnes & Hernquist citation | ✅ | (final pass) | barnes_hernquist_92 ARA&A entry added; cited at "ISM funneled to galactic center during merger" §1 |
 | 1.7 Munoz 2017 for eccentricity | ✅ | (v2 baseline) | `miranda_munoz_lai_2017` already cited |
-| 1.8 1.01 a_b accretion horizon | 🔴 | — | Not done |
-| 1.9 \citealt sweep | 🔴 | — | Not done |
+| 1.8 1.01 a_b accretion horizon | ✅ | (earlier pass) | Reworded to "accretion horizon at r≈1.01 a_b (the binary semi-major axis), inside of which any gas that enters is captured by one of the BHs" |
+| 1.9 \citealt sweep | 🟡 | (final pass) | \citealt used in 3000-orbit footnote per #4.4; broader sweep not done (low-priority cosmetic) |
 | 1.10 Farris+2014 / Duffell+2017 | 🟡 | (v2 baseline) | Farris already cited; Duffell+2017 not added |
-| 1.11 "to date" wording | 🔴 | — | Not done |
-| 1.12 D'Orazio 2013 in periodogram context | 🟡 | (v2 baseline) | dorazio_2013 cited generally, not yet specifically tied to §3.1 periodogram discussion |
+| 1.11 "to date" wording | ✅ | (final pass) | Added to SPH simulations clause: "To date, in simulations run for ≤ 100 τ_b..." |
+| 1.12 D'Orazio 2013 in periodogram context | ✅ | (final pass) | Cited in §3.1 lambda_full opener: "naturally framed in periodogram terms following \citet{dorazio_2013}" |
 
 ### Page 2 — intro, §2.1, §2.2
 
 | Annotation | Status | Commit | Notes |
 |---|---|---|---|
 | 2.1 / 3.1 MNRAS sentence-case section titles | ✅ | f0f6c11 | DIFF 16: 11 headings updated |
-| 2.2 Statler 2001 ELR clarification | 🔴 | — | Not done |
-| 2.3 "apsidal not nodal" main text | 🔴 | — | Not done (currently footnote only) |
-| 2.4 "and refer readers to" wording | 🔴 | — | Not done |
-| 2.5 Density + temperature profiles | 🔴 | — | Not done |
-| 2.6 "settle" not "viscously spread" | 🔴 | — | Not done |
+| 2.2 Statler 2001 ELR clarification | ✅ | (final pass) | Statler 2001 cited specifically for orbit-crossings as a damping mechanism, distinct from the ELR/spiral-shock growth mechanisms — clarification matches Zoltan's framing |
+| 2.3 "apsidal not nodal" main text | ✅ | (final pass) | §2.3 main text now says "due to its apsidal (rather than nodal) precession" |
+| 2.4 "and refer readers to" wording | ✅ | (final pass) | §2.1 opener now reads "we briefly describe the setup ... and refer readers to \citet{siwek_prefacc, siwek_cbdorbevol}" |
+| 2.5 Density + temperature profiles | ✅ | (final pass) | §2.1 now mentions "power-law surface-density profile and a corresponding temperature profile (set by the locally isothermal condition)" |
+| 2.6 "settle" not "viscously spread" | ✅ | (final pass) | §2.1 now uses "allowing the disk to settle into a quasi-steady state" |
 | 2.7 q_b ≡ M_2/M_1 ≤ 1 explicit | ✅ | 34a60d9 | DIFF 19 covers this in §3.2 |
 | AREPO citation | ✅ | 34a60d9 | DIFF 20: \citep{Springel_arepo_10} added |
 | "aopocenter" typo | ✅ | 34a60d9 | DIFF 20: fixed → "apocenter" |
@@ -63,7 +63,7 @@ This document maps every Zoltan comment from his March 24, 2025 marked-up PDF to
 
 | Annotation | Status | Commit | Notes |
 |---|---|---|---|
-| 3.2 (e_b, q_b) ordering paper-wide | 🟡 | 34a60d9, etc. | Done in places I rewrote (DIFFs 1, 2, 4, 19, 25, etc.); broader sweep not done |
+| 3.2 (e_b, q_b) ordering paper-wide | ✅ | (final pass) | Paper-wide perl regex sweep applied; manual fixes at lines 436, 438; notation now consistently (e_b, q_b) |
 | 3.3 §3 wording tweaks | 🟡 | 3645b14 | "is a clear correlation" wording fix done; others not |
 | 3.4 Miranda Muñoz 2017 m=0 locking | ✅ | (v2 baseline) | Already cited generally |
 
@@ -114,7 +114,7 @@ This document maps every Zoltan comment from his March 24, 2025 marked-up PDF to
 
 | Annotation | Status | Commit | Notes |
 |---|---|---|---|
-| 8.1 Notation (q_b, e_b) = (1, 0.2) | 🟡 | 34a60d9 | DIFF 19 partially handles |
+| 8.1 Notation (q_b, e_b) = (1, 0.2) | ✅ | (final pass) | Paper-wide (e_b, q_b) tuple sweep; Fig 9 caption + line 590 cleaned up so all parameter values list e_b before q_b |
 | 8.2 "heh? what do you mean?" | ✅ | 34a60d9 | DIFF 19: full notation paragraph |
 | 8.3 "presence/absence of" | ✅ | (final pass) | Reworded §3.2 q_b=1 row paragraph as "presence or absence of mass-ratio evolution among initially equal-mass binaries" |
 | 8.4 Disk realignment timescale | ✅ | 34a60d9 | DIFF 5: "typical disk precession timescale" verbatim from Zoltan |
@@ -144,7 +144,7 @@ This document maps every Zoltan comment from his March 24, 2025 marked-up PDF to
 | Annotation | Status | Commit | Notes |
 |---|---|---|---|
 | 11.1 "dearth of q=1 binaries" | ✅ | 34a60d9 / b5cb1e7 | DIFFs 1, 2 use Zoltan's exact phrasing |
-| 11.2 q vs q_b consistency | 🟡 | 34a60d9 | DIFF 19 + sweeps in places |
+| 11.2 q vs q_b consistency | ✅ | (final pass) | DIFF 19 notation paragraph (§3.2) clarifies q_b for initial conditions and q for time-evolving state; §4.2 integration consistently uses q_b for ICs and q for evolved state |
 | 11.3 Three Peters 1964 citations | ✅ | 34a60d9 | DIFF 7 |
 | 11.4 Mangiagli 2020 confirmed | ✅ | (ADS check) | No 2023 follow-up exists; mention in Day-1 email |
 
@@ -209,23 +209,16 @@ This document maps every Zoltan comment from his March 24, 2025 marked-up PDF to
 
 ---
 
-## Section F — Skipped tasks (recommend if time permits before Day 14)
+## Section F — Items still deferred (post-final-pass)
 
-These are real Zoltan asks that would need additional work:
-
-| Item | Why skipped | Estimated time to do |
+| Item | Why deferred | Estimated time to do |
 |---|---|---|
-| Fig 1 layout rewrite (panels touching, larger labels, annotation 4.1) | Full subplot-grid rewrite of magda_accretion_actual_fixed.py | half day |
-| Fig 5 aspect ratio match (annotation 6.1) | Layout rewrite of magda_accretion_geometry_ecc_combined.py | 30 min |
-| Fig 6 panel concatenation (annotation 7.1) | Layout rewrite of proof_lambda_r_not_causal.py | half day |
-| **Fig 8 axis labels** (annotations 9.1, 9.3) — **CRITICAL per Zoltan** | Full rewrite of accretion_eddington.py | full day |
 | Fig 10 detection-region annotations (annotation 10.1) | Mod of physicality_heatmap_obs_timescale.py | 2 hours |
 | Fourier panels for Fig 6 (#4b) | New script using cached data | 2 hours |
-| Citation hunt: Barnes & Hernquist 1992; Farris/Duffell 2017; D'Orazio 2013 in periodogram context | ADS lookup + bib entries | 2 hours |
-| Page 1-2 prose sweeps: 1.5, 1.6, 1.8, 1.9, 1.10, 1.11; 2.2-2.6 | Sweep | 2 hours |
-| (e_b, q_b) ordering paper-wide | Mechanical sweep | 30 min |
+| Duffell+2017 cite (1.10) | ADS lookup + bib entry | 15 min |
+| \citealt broader sweep (1.9) | Cosmetic | 30 min |
 
-**Strong recommendation**: do Fig 8 axis labels at minimum before Day 14, since Zoltan literally wrote the missing labels in by hand on the marked-up PDF — most-flagged figure issue.
+Final-pass closed: Fig 1 layout (4.1), Fig 5 aspect (6.1), Fig 6 panel concatenation + caption (7.1, 7.2), Fig 8 labels (9.1, 9.3), 3000τ footnote (4.4), presence/absence (8.3), Mdot_Edd lead-in (8.5), Barnes & Hernquist + D'Orazio cites (1.5, 1.6, 1.11, 1.12), page-2 prose sweep (2.3, 2.4, 2.5, 2.6), (e_b, q_b) ordering (3.2).
 
 ---
 
