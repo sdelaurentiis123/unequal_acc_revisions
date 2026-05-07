@@ -463,7 +463,7 @@ for timeindex in range(len(time_start_list)):
     
     
     for axs in ax.flatten():
-        axs.set_ylim(1e-1,1e1)
+        axs.set_ylim(3e-2, 3e1)  # padding so 10^-1 and 10^1 tick labels don't crush at panel boundaries
         axs.set_yscale('log')
         axs.set_xlim(time_start,time_end)
         
