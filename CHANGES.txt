@@ -3,7 +3,7 @@ Hi Zoltan,
 Attached is v3 of the unequal-accretion paper, addressing the comments
 you sent in March 2025. Two PDFs:
 
-  v3_clean.pdf — the publish-ready version, 14 pages.
+  v3_clean.pdf — the publish-ready version, 15 pages.
   v3_diff.pdf  — same content with red strikethrough = v2 deletions,
                  blue underline = v3 additions, so you can see at a glance
                  what changed.
@@ -38,11 +38,14 @@ THE EIGHT NUMBERED COMMENTS
    §3.1.1). Cavity ellipse, binary at apocenter for q_b ≪ 1, r_1 and
    r_2 vectors, precession indicator.
 
-#4b (Fourier-transform companion panels for Fig 6). DEFERRED. The
-   methodology bridge in §3.1.1 (see #5b) explains the period match
-   qualitatively without the FFT figure. This is real work to add as
-   a separate figure (FFT panels of r_1, r_2, λ for several sims).
-   Tell me if you want it and I'll build it.
+#4b (Fourier-transform companion panels for Fig 6). DONE — new
+   figure fig:fourier_panels (Fig 8 in v3) shows time-series and
+   normalized rFFT power spectra for the two messy cases of Fig 6:
+   (e_b, q_b) = (0.8, 0.3) (top) and (0.4, 0.7) (bottom). Both signals
+   peak at τ ≈ 700 τ_b for the first; the second sits in the same
+   period range but below the 0.05 amplitude threshold, illustrating
+   the FFT-instability case the paper already calls out. Code in
+   scripts/fourier_panels_fig6.py.
 
 #5b (justify the apocenter→precession inference). New paragraph in
    §3.1.1 makes the argument explicit, in plain language: 10 τ_b
@@ -51,12 +54,17 @@ THE EIGHT NUMBERED COMMENTS
    matches λ(t)'s. The period match licenses the inference.
 
 #6 (Ṁ_b dependence — "this might be the most interesting take-away").
-   Initially I built a 4-panel mini-figure but the sub-Eddington panels
-   were entirely empty. After looking at it I dropped the figure and
-   added one sentence in §4.1: "the qualitative tapestry of regimes
-   shifts continuously with Ṁ_b: at sub-Eddington rates no jets launch
-   anywhere, while at strongly super-Eddington rates dual jets
-   dominate. Fig 8 is one slice of this continuous family."
+   DONE — fig:mini_jet_regimes (after Fig 10 in v3) reproduces the
+   per-BH accretion-rate panel grid at TWO bracketing Ṁ_b values that
+   place each BH well inside one of the two jet-launching regimes:
+   a deep-ADAF case (Ṁ_b = 0.001 Ṁ_Edd, applying the Ṁ < 0.01 Ṁ_Edd
+   ADAF threshold) and a strongly super-Eddington case (Ṁ_b = 5 Ṁ_Edd,
+   applying the Ṁ > 1.1 Ṁ_Edd thick-disk threshold). At BOTH extremes
+   dual jets dominate the parameter space; the fiducial Ṁ_b = 1 Ṁ_Edd
+   (existing Fig 8 / Fig 10 in v3) sits in the radiatively-efficient
+   transition band where the regime mix is richest. The §4.1 prose was
+   rewritten to make this dual-regime story explicit. Code in
+   scripts/mini_fig8_jet_regimes.py.
 
 #7 + #8 (LISA prediction tone-down — your main concern). The §4.2
    closing block is rewritten with three paragraphs. Headline:
@@ -148,9 +156,10 @@ Page 3 (λ definitions, §3 intro)
   3.4 Miranda Muñoz 2017 m=0 locking:       ALREADY CITED.
 
 Page 4 (Fig 1)
-  4.1 Panels touching, larger labels:       DONE — sharex/sharey,
-      hspace=wspace=0; labels at 16pt; figsize 21×20 → 16×20; ylim
-      padded to 3e-2..3e1 so boundary tick labels don't crush.
+  4.1 Panels touching, larger labels:       DONE — Fig 1 + Fig 5
+      use sharex/sharey, hspace=wspace=0; labels at 16pt; figsize
+      21×20 → 16×20; ylim padded to 3e-2..3e1 so boundary tick
+      labels don't crush.
   4.2 Fig 1 caption:                        DONE.
   4.3 "is a clear correlation" body wording: DONE.
   4.4 3000-orbit footnote ambiguity:        DONE — footnote rewritten:
@@ -299,13 +308,66 @@ LISA Preparatory Science grant numbers are placeholder — I need those
 from you.
 
 
-STILL DEFERRED (small list)
+FINAL POLISH PASS (cosmetic, citations, notation, figure self-containment)
 
-The only items still open are ones I'd flag as either real new work
-or where I'd need your input:
+After all the science items closed I did a final ship-readiness pass:
 
-  - #4b Fourier panels for Fig 6: a new figure showing FFTs of
-    r_1, r_2, λ for several sims. Real new work (~half day).
+Title & global capitalization. Title sentence-cased and "Systems"
+dropped: "Preferential accretion onto eccentric and unequal binary
+black holes." Common nouns lowercased throughout: "Supermassive
+binary black holes (SMBBHs)" at acronym definition, lowercase
+elsewhere; same for "circumbinary disks". §4.2 heading hyphenated
+to "Unequal-mass sources."
+
+Wording sweeps (line-level, all targeted from your margin notes):
+  - "though the distance" → "through the distance" (typo)
+  - "non-overlapping sliding windows" → "non-overlapping 10-orbit
+    windows" (was internally contradictory)
+  - "What first strikes us in X" → "A striking feature of X is..."
+    (3 instances, §3.1, §3.2, §4.1)
+  - "non-time stable" → "time-varying"
+  - "sinusodial" → "sinusoidal"
+  - "in a human lifetime" → "to find in a human lifetime"
+  - "common enough" → "not exceedingly rare"
+  - "novel aspects of this system" → "one aspect of this system"
+  - "away from unity" → "away from equal mass (q_b = 1)" (selective)
+  - Eq-args (q_b, e_b) → (e_b, q_b) for tuple-order consistency.
+  - Mdot_Edd brace style standardized.
+
+Summary item refinements: (i) "time-stable" → "constant", added
+Table 1 reference; (ii) and (iii) added missing figure references
+(Fig:lambda_mean_heatmap, Fig:lambda_std_heatmap, Fig:a_e_cav_heatmap);
+(v) "preferentially" → "at a higher rate than its counterpart."
+
+Citations:
+  - DeLaurentiis25 (in prep) converted to "(DeLaurentiis & Rafikov,
+    in preparation)" prose at all 11 sites; bib entry deleted.
+    DeLaurentiis24 (the real ApJ paper) untouched.
+  - Siwek+2023a (siwek_prefacc): first mention now reads
+    "\citet[hereafter S23]{siwek_prefacc}"; subsequent grammatical
+    \citet{} calls (10 of them) replaced with plain "S23" for
+    readability. Multi-key \citep blocks unchanged.
+
+Figure self-containment (your repeated "captions need to be
+self-contained" + "define for readers who haven't read the text"):
+  - Fig 3 (mean λ vs q_b): y-axis label now carries the full
+    definition "<λ> = <Ṁ_2/Ṁ_1>".
+  - Fig 5 (mean λ heatmap): cbar label same definition.
+  - Fig 9 (q-dot heatmap): cbar label now "<q-dot> = <d/dt(M_2/M_1)>".
+  - Fig 11 (λ̃ map): cbar carries the explicit
+    "log_10 λ̃, where λ̃ = <max>/<min>" definition.
+  - Fig 8 caption: corrected primary/secondary color swap (was
+    "primary (red), secondary (black)" but the figure plots
+    primary in black, secondary in red).
+  - Fig 12 (evolution_plots) caption: (e_b, q_b) tuple ordering
+    fixed; explicit "eccentricity" and "mass ratio" labels.
+
+
+STILL DEFERRED (smaller items, cover-letter flags)
+
+The only remaining open items need either real new work or your
+input:
+
   - 10.1 LISA detection regions on Fig 10: would overlay detection
     thresholds on the physicality heatmap; needs us to agree on
     quantitative definition (~2 hours).
