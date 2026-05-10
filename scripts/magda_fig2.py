@@ -52,6 +52,7 @@ ax.set_xlabel(r"$q_b$", fontsize=14)
 ax.set_ylabel(r"$\langle \lambda \rangle = \langle \dot{M}_2 / \dot{M}_1 \rangle$", fontsize=14)
 ax.set_xscale('log')
 ax.set_yscale('log')
+ax.set_ylim(top=1e3)
 
 # Gray-shaded region: lambda > 1 (preferential to apocenter-defined secondary)
 ax.axhspan(1, 1e3, color='gray', alpha=0.18, zorder=0)

@@ -38,15 +38,8 @@ for i, qb in enumerate(qblist):
         lambda_vals[i, j] = np.mean(meds)
 
 fig, ax = plt.subplots(figsize=(8, 6))
-# Sequential colormap on |log10(<lambda>)|: emphasize MAGNITUDE of preferential
-# accretion (deviation from lambda=1), not the direction. The 9 cells with
-# <lambda> < 1 are a mix of (a) q_b=1 sims where symmetry breaking lands on
-# the apocenter-defined-primary by convention and (b) unequal-mass dimspots
-# (e.g., (e_b, q_b) = (0.5, 0.2) at <lambda> = 0.93) where the asymmetry is
-# anomalous — see body text.
-log_mag = np.abs(np.log10(lambda_vals))
 c = ax.imshow(
-    log_mag,
+    lambda_vals,
     aspect="auto",
     origin="lower",
     cmap="viridis",
@@ -60,22 +53,25 @@ ax.set_yticks(qblist_mod)
 ax.set_xticklabels(ecclist)
 ax.set_yticklabels(qblist)
 
-# In-cell value labels: plain white text.
+# Text color picked by viridis luminance so labels stay readable across the range.
+vmin, vmax = lambda_vals.min(), lambda_vals.max()
 for i in range(len(qblist)):
     for j in range(len(ecclist)):
         v = lambda_vals[i, j]
+        norm = (v - vmin) / (vmax - vmin) if vmax > vmin else 0.0
+        rgba = plt.cm.viridis(norm)
+        lum = 0.299*rgba[0] + 0.587*rgba[1] + 0.114*rgba[2]
         ax.text(
             (np.array(ecclist_mod) + (ecclist_mod[1] - ecclist_mod[0]) / 2)[j],
             qblist_mod[i],
             f"{v:.2f}",
-            ha="center", va="center", color="white", fontsize=8,
+            ha="center", va="center",
+            color="black" if lum > 0.5 else "white",
+            fontsize=8,
         )
 
 cbar = plt.colorbar(c, ax=ax)
-cbar.set_label(
-    r"$|\log_{10}\langle\lambda\rangle|$ (magnitude of preferential accretion)",
-    fontsize=12,
-)
+cbar.set_label(r"$\langle\lambda\rangle = \langle\dot{M}_2/\dot{M}_1\rangle$", fontsize=12)
 ax.set_xlabel(r"$e_b$", fontsize=12)
 ax.set_ylabel(r"$q_b$", fontsize=12)
 plt.tight_layout()

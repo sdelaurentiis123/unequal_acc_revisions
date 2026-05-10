@@ -690,15 +690,18 @@ x_values = np.array([x/10 for x in range(0, 9) if x != 7])  # Creates [0, 0.1, .
 ax.set_xticks(np.arange(len(x_values)))
 ax.set_xticklabels([f'{x:.1f}' for x in x_values])
 
-# Cell labels match cbar (linear lambda_tilde). Use median as the
-# light/dark threshold so labels stay legible across the dynamic range.
-label_thresh = np.median(output_matrix)
+# Text color picked by luminance of the viridis cell so labels stay readable
+# (yellow/teal high cells -> black text; dark purple/blue low cells -> white)
+vmin, vmax = output_matrix.min(), output_matrix.max()
 for i in range(len(qb_values)):
     for j in range(len(x_values)):
         v = output_matrix[i, j]
+        norm = (v - vmin) / (vmax - vmin) if vmax > vmin else 0.0
+        rgba = plt.cm.viridis(norm)
+        lum = 0.299*rgba[0] + 0.587*rgba[1] + 0.114*rgba[2]
         ax.text(j, i, f'{v:.1f}',
                 ha='center', va='center',
-                color='white' if v < label_thresh else 'black')
+                color='black' if lum > 0.5 else 'white')
 
 divider = make_axes_locatable(ax)
 cax = divider.append_axes("right", size="5%", pad=0.05)
