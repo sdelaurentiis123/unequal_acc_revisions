@@ -67,5 +67,9 @@ for i in range(3):
         if i == 2:
             ax[i][j].set_xlabel(r'Time $[\tau_b]$')
 
+# Drop boundary ticks so 5000/10000 don't collide at the wspace=0 column join
+ax[2][0].set_xticks([5000, 6000, 7000, 8000, 9000])
+ax[2][1].set_xticks([6000, 7000, 8000, 9000, 10000])
+
 fig.savefig('proof_of_lambda_r_not_causal.pdf', bbox_inches='tight')
 print("Wrote proof_of_lambda_r_not_causal.pdf")

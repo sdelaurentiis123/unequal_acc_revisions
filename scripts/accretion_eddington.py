@@ -678,11 +678,7 @@ from mpl_toolkits.axes_grid1 import make_axes_locatable
 
 
 fig, ax = plt.subplots(figsize=(6,6),)
-# Create the imshow plot
-im = ax.imshow(np.log10(output_matrix), cmap='viridis',
-               #vmin=-16,
-               #vmax=-15
-               )
+im = ax.imshow(output_matrix, cmap='viridis')
 
 # Create tick positions and labels for x-axis (qb from 1 to 0.1)
 qb_values = np.arange(1, 0, -0.1)  # Creates array [1.0, 0.9, ..., 0.1]
@@ -694,20 +690,20 @@ x_values = np.array([x/10 for x in range(0, 9) if x != 7])  # Creates [0, 0.1, .
 ax.set_xticks(np.arange(len(x_values)))
 ax.set_xticklabels([f'{x:.1f}' for x in x_values])
 
-# Add annotations for each cell
-log_data = np.log10(output_matrix)
+# Cell labels match cbar (linear lambda_tilde). Use median as the
+# light/dark threshold so labels stay legible across the dynamic range.
+label_thresh = np.median(output_matrix)
 for i in range(len(qb_values)):
     for j in range(len(x_values)):
-        text = ax.text(j, i, f'{log_data[i,j]:.2f}',
-                      ha='center', va='center',
-                      color='white' if log_data[i,j] < 1.5 else 'black')
+        v = output_matrix[i, j]
+        ax.text(j, i, f'{v:.1f}',
+                ha='center', va='center',
+                color='white' if v < label_thresh else 'black')
 
 divider = make_axes_locatable(ax)
 cax = divider.append_axes("right", size="5%", pad=0.05)
-cbar= plt.colorbar(im, cax=cax)
-# Add colorbar and label
-#cbar = fig.colorbar(im, ax=ax)
-cbar.set_label(r'$\log_{10} \tilde{\lambda}$, where $\tilde{\lambda} = \langle \max(\dot{M}_1, \dot{M}_2) \rangle / \langle \min(\dot{M}_1, \dot{M}_2) \rangle$')
+cbar = plt.colorbar(im, cax=cax)
+cbar.set_label(r'$\tilde{\lambda} = \langle \max(\dot{M}_1, \dot{M}_2) \rangle / \langle \min(\dot{M}_1, \dot{M}_2) \rangle$')
 
 
 # Add axis labels if desired

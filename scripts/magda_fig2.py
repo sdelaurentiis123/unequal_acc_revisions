@@ -53,6 +53,9 @@ ax.set_ylabel(r"$\langle \lambda \rangle = \langle \dot{M}_2 / \dot{M}_1 \rangle
 ax.set_xscale('log')
 ax.set_yscale('log')
 
+# Gray-shaded region: lambda > 1 (preferential to apocenter-defined secondary)
+ax.axhspan(1, 1e3, color='gray', alpha=0.18, zorder=0)
+
 magda_hypothesis = lambda x: x**(-0.9)
 
 ax.plot(np.linspace(0.1, 1, 500), magda_hypothesis(np.linspace(0.1, 1, 500)), ls='--', color='darkgreen', alpha=1.0, label=r'$q_b^{-0.9}$')
