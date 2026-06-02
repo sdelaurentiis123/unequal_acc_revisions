@@ -8,9 +8,19 @@
 *.synctex.gz
 *.fls
 *.fdb_latexmk
+# Compiled paper PDF (build artifact; only fig PDFs are tracked)
+main.pdf
+# latexdiff outputs
+main_diff.pdf
+main_diff.tex
 # Backup files
 *.bak
 main.tex.bak
 main.bib.bak
+# Snapshot leftovers
+v2_main.tex
+# gstack metadata
+**/.gstack/
+.gstack/
 # Data symlinks (large, not tracked)
 data/metrics_data
