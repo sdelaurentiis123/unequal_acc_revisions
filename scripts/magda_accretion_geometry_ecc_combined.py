@@ -627,8 +627,8 @@ for qbind in range(len(qblist)):
             
             axalt[9-qbind][ebind].axhline(1, color='darkgray', ls='--', alpha=0.5)
             #fajdsflk
-     
-asfdd
+
+# asfdd  -- NameError breakpoint disabled for Fig 6 heatmap regen
  
 for axs in ax.flatten():
     axs.set_yscale('log')
@@ -1361,20 +1361,21 @@ c = ax.imshow(new_map, cmap="magma", vmin=0.3, vmax=3, aspect="auto")
 
 # Add colorbar
 cbar = fig.colorbar(c, ax=ax)
-cbar.set_label(r'$\tau_{\lambda} / \tau_{r_{1}}$')
+cbar.set_label(r'$\tau_{\lambda} / \tau_{r_{1}}$', fontsize=18)
+cbar.ax.tick_params(labelsize=14)
 
 # Set axis labels and ticks
-ax.set_ylabel(r"$q_b$")  # q on the y-axis
-ax.set_xlabel(r"$e_b$")  # e on the x-axis
+ax.set_ylabel(r"$q_b$", fontsize=20)  # q on the y-axis
+ax.set_xlabel(r"$e_b$", fontsize=20)  # e on the x-axis
 ax.set_xticks(np.arange(len(ecclist)))  # Set tick positions
-ax.set_xticklabels(ecclist)  # Set tick labels
-ax.set_yticks(np.arange(len(qblist)))  
-ax.set_yticklabels(np.flip(qblist))  
+ax.set_xticklabels(ecclist, fontsize=14)  # Set tick labels
+ax.set_yticks(np.arange(len(qblist)))
+ax.set_yticklabels(np.flip(qblist), fontsize=14)
 
 # Annotate each cell with the corresponding value
 for i in range(new_map.shape[0]):
     for j in range(new_map.shape[1]):
-        ax.text(j, i, f"{new_map[i, j]:.2f}", ha='center', va='center', color='white')
+        ax.text(j, i, f"{new_map[i, j]:.2f}", ha='center', va='center', color='white', fontsize=13)
 
 # Adjust layout and save figure
 plt.tight_layout()
