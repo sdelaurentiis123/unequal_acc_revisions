@@ -8,6 +8,7 @@
 *.synctex.gz
 *.fls
 *.fdb_latexmk
+main.pdf
 # Backup files
 *.bak
 # gstack metadata
