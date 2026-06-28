@@ -31,6 +31,22 @@ need **your** science judgment or a decision I shouldn't make autonomously.
   disks"; p.10 "unique to e_b≠0"/"few dual-jet"; p.13 "q=1"; p.15 "more complex than previously
   thought". Italics in these spots read oddly in MNRAS style; applied only where it aids clarity.
 
+## Minor markup items NOT applied (couldn't locate cleanly / would harm grammar) — confirm
+- "alone" → "by itself" (p.10): the "alone"s in the text are "precession alone" and "from (e_b,q_b)
+  alone" — both fine; no bad usage found. Not changed.
+- insert "evolution of the" before "binary mass" (p.2): existing "binary mass ratio" reads fine; not changed.
+- delete "Smoothed" (p.11): not in the LaTeX — it's in the Fig 11 (mdot_edd) y-axis label baked into the
+  PDF/PNG. Remove when regenerating the figure (`accretion_eddington.py`).
+- delete "respectively" (p.12, conclusions/§3.1): deleting harms the e/q mapping; left in. Confirm.
+- delete "(0.2, 1.0) and" (p.14): would drop the (0.2,1.0) verification statement (factual); left in. Confirm.
+- emphasize "and" (p.12): trivial; not applied.
+- Peters (1964) / "2020; Zrake 2021; Siwek 2023b,2024" citation flags (p.12): cites render correctly
+  via \citealt{peters_64}, \citealt{...zrake_2021...}; no change needed — verify in PDF.
+- Kevin's email (separate from the 187): Fig 14 redshift z=10 -> consider z=3; gas-eccentricity
+  definitions (partly addressed in Disk theory); Miranda-Munoz-Lai 2017 recap of the e=0.1->0.2
+  precession transition; Doppler-boost + self-lensing-flare discussion paragraphs. NOT done — larger
+  additions for your pass.
+
 ## Science items you said you'd revisit
 - **#19 jet/Eddington normalization (p.10/11):** reviewer "how is this possible??". I derived the
   budget constraint: with Ṁ_b=1 Ṁ_Edd, x + q_b·y = 1+q_b (x≡Ṁ_1/Ṁ_Edd,1, y≡Ṁ_2/Ṁ_Edd,2), so both
