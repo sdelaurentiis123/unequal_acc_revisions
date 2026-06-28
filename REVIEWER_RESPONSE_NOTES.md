@@ -32,12 +32,17 @@ need **your** science judgment or a decision I shouldn't make autonomously.
   thought". Italics in these spots read oddly in MNRAS style; applied only where it aids clarity.
 
 ## Science items you said you'd revisit
-- **#19 jet/Eddington normalization (p.10/11):** reviewer "how is this possible??" — both BHs
-  cannot simultaneously exceed Ṁ_Edd when Ṁ_bin is normalized to 1 Ṁ_Edd (ΣṀ_Edd,i ≈ Ṁ_Edd,tot).
-  A sustained dual jet at Ṁ_bin=1 must be one super-Edd (thick) + one ADAF jet, not two super-Edd.
-  I added clarifying text + flagged; **verify Fig 11 (mdot_edd) upper-left panel** doesn't actually
-  show two simultaneous super-Edd jets, and that "always the secondary at 1 Ṁ_Edd" / "primary at
-  5 Ṁ_Edd (wobbles less)" is borne out by the data.
+- **#19 jet/Eddington normalization (p.10/11):** reviewer "how is this possible??". I derived the
+  budget constraint: with Ṁ_b=1 Ṁ_Edd, x + q_b·y = 1+q_b (x≡Ṁ_1/Ṁ_Edd,1, y≡Ṁ_2/Ṁ_Edd,2), so both
+  BHs can't sit *well* above the 1.1 super-Edd threshold at once. **Looked at Fig 11
+  (mdot1_mdot2_1edd_both_truncated.pdf): the purple "dual-jet" cells are the near-equal-mass,
+  low-e_b corner where M_1≈M_2≈0.5 Ṁ_Edd,b ⇒ both BHs sit right at x≈y≈1.0** (exactly Eddington),
+  i.e. marginal, threshold-sensitive — not two BHs comfortably super-Edd. I softened the text to
+  say this (marginal dual cells; robust dual jets need bracketing Ṁ_b) so it no longer contradicts
+  the figure. **TODO (you):** decide whether to (a) regenerate Fig 11 (`accretion_eddington.py`)
+  with a cleaner threshold so those marginal cells are not coloured "dual," or (b) keep + caption
+  them as marginal. Also: reviewer's "single jet from primary at 5 Ṁ_Edd, wobbles less" (p.13) —
+  I did NOT assert this (couldn't verify which BH dominates at 5 Ṁ_Edd); confirm against Fig 13.
 - Sink r_s = 0.03 a_b same for both BHs (p.2): noted as a numerical choice; sensitivity untested.
 - Threshold 0.05 (FFT amplitude) and jet 1.1 Ṁ_Edd / 50 τ_b sensitivity (p.8): not tested.
 - Ṁ_b = 100 Ṁ_Edd (p.12): reviewer "why so big?" — kept, with note it only sets the timescale;
