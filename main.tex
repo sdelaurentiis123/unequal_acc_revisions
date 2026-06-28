@@ -1,4 +1,5 @@
 \documentclass[fleqn,usenatbib]{mnras}
+\PassOptionsToPackage{table}{xcolor}
 \usepackage{graphicx} % Required for inserting images
 \usepackage{amsmath}      % Advanced math formatting
 \usepackage{amssymb}      % Symbols like \mathbb
@@ -9,10 +10,12 @@
 \usepackage{upgreek}    % Upright Greek Symbols
 %\usepackage{gensymb}    % General Symbols
 \usepackage{orcidlink}  % orcid
-\usepackage[table]{xcolor}
+\usepackage{xcolor}
 \usepackage[normalem]{ulem}
 \usepackage{tikz}
 \usetikzlibrary{decorations.markings}
+\usepackage{xspace}
+\usepackage{diagbox}
 
 
 \interfootnotelinepenalty=10000
@@ -31,7 +34,7 @@
 \renewcommand{\subsubsectionautorefname}{Section}
 \newcommand{\mss}[1]{\textbf{\textcolor{purple}{[MSS: #1]}}}
 \newcommand{\sod}[1]{\textbf{\textcolor{green}{[SOD: #1]}}}
-\newcommand{\Stwentythree}{\href{https://doi.org/10.1093/mnras/stac3263}{S23}}
+\newcommand{\Stwentythree}{\href{https://doi.org/10.1093/mnras/stac3263}{S23}\xspace}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -103,7 +106,7 @@ The simulations, conducted with the moving-mesh code AREPO \citep{Springel_arepo
 
 \subsection{Disk theory}
 
-In order to illuminate the relationship between the accretion of the binary and the behavior of the CBD we must first characterize the time-variable behavior and attributes of the disk. Namely, we focus on the eccentricity and precession of the disk. 
+In order to illuminate the relationship between the accretion of the binary and the precession and eccentricity of the CBD we must first characterize the time-variable attributes of the disk. Namely, we focus on the eccentricity and precession of the disk. By the eccentricity of the disk (or ``gas eccentricity'') we mean the mass-weighted orbital eccentricity of the gas, obtained from the local eccentricity vector $\mathbf{e}(\mathbf{r}) = (\mathbf{v}\times(\mathbf{r}\times\mathbf{v}))/GM_b - \hat{\mathbf{r}}$ of each fluid element; in practice we characterize it through the shape of the cavity (its inner edge), as described below.
 
 Gas eccentricity within CBDs is expected to grow through mechanisms such as eccentric Lindblad resonances (ELRs) or spiral shock pumping at the cavity edge \citep{lubow_91, whitehurst_94, paardekooper_2008, kley_2008, shi_2012}. While ELRs and spiral shocks promote eccentricity growth \citep{lubow_91, shi_2012}, viscous damping acts to suppress it \citep{Goodchild_2006}. Previous 2D simulations have found steady-state eccentricity profiles, indicating that these competing effects can reach equilibrium \citep{miranda_munoz_lai_2017, siwek_prefacc}.
 
@@ -119,10 +122,10 @@ While alternative explanations have been proposed \citep{Artimowicz_83_og_polish
 
 
 \subsection{Numerical techniques}
-As discussed earlier, in order to highlight the link between accretion and the behavior of the CBD, we are interested in understanding both as time-dependent quantities. The orientation of the CBD is inherently time-dependent due to its apsidal (rather than nodal) precession\footnote{While the eccentricity and semi-major axis of the cavity are strictly time-dependent, for most systems we find that the shape of the cavity achieves a steady state and its time-dependence is dominated by its apsidal precession alone.}. Since our simulation runs output snapshots every $10$ orbits, the time-series associated with our CBD is constrained to a $10 \tau$ cadence.
+As discussed earlier, in order to highlight the link between accretion and the precession of the CBD, we are interested in understanding both as time-dependent quantities. The orientation of the CBD is inherently time-dependent due to its apsidal (rather than nodal) precession\footnote{While the eccentricity and semi-major axis of the cavity are strictly time-dependent, for most systems we find that the shape of the cavity achieves a steady state and its time-dependence is dominated by its apsidal precession alone.}. Since our simulation runs output snapshots every $10$ orbits, the time-series associated with our CBD is constrained to a $10\,\tau_b$ cadence.
 
 
-The accretion rate is likewise time-dependent. For each sink, the simulation tracks the mass accreted $\Delta m$ at time-step $t$, with a maximum cadence of $0.01 \tau$. As we are interested in comparing the accretion rate to the behavior of the CBD, we down-sample the high cadence accretion rate data to yield a time-series that matches the $10$ orbit cadence of the CBD time-series. We do this by summing the instantaneous mass accreted over non-overlapping $10$-orbit windows and dividing it by the window size (of $10$ orbits). After we transform the accretion rates for each BH into the lower cadence of $10$ orbits, we construct our preferential accretion quantity $\lambda(t) = \frac{\dot{M}_2(t)}{\dot{M}_1(t)}$, the ratio of the accretion rate of the secondary to the primary.
+The accretion rate is likewise time-dependent. For each sink, the simulation tracks the mass accreted $\Delta m$ at time-step $t$, with a maximum cadence of $0.01\,\tau_b$. As we are interested in comparing the accretion rate to the behavior of the CBD, we down-sample the high cadence accretion rate data to yield a time-series that matches the $10$ orbit cadence of the CBD time-series. We do this by summing the instantaneous mass accreted over non-overlapping $10$-orbit windows and dividing it by the window size (of $10$ orbits). After we transform the accretion rates for each BH into the lower cadence of $10$ orbits, we construct our preferential accretion quantity $\lambda(t) = \frac{\dot{M}_2(t)}{\dot{M}_1(t)}$, the ratio of the accretion rate of the secondary to the primary.
 
 We also report the rate of change of the mass-ratio $\dot{q}(t)$. We define it as 
 \begin{equation}\label{eqn:q_dot}
@@ -260,7 +263,7 @@ A striking feature of \autoref{fig:lambda_full} is the broad division of $\lambd
     \cellcolor{red}\textcolor{white}{S} & 
     \cellcolor{red}\textcolor{white}{S} \\ 
     \hline
-    \multicolumn{1}{|c|}{\textbf{q$_b$/e$_b$}} & \textbf{0.0} & \textbf{0.1} & \textbf{0.2} & \textbf{0.3} & \textbf{0.4} & \textbf{0.5} & \textbf{0.6} & \textbf{0.8} \\
+    \multicolumn{1}{|c|}{\diagbox[height=2.2\line]{$q_b$}{$e_b$}} & \textbf{0.0} & \textbf{0.1} & \textbf{0.2} & \textbf{0.3} & \textbf{0.4} & \textbf{0.5} & \textbf{0.6} & \textbf{0.8} \\
     \hline
 \end{tabular}
 \caption{Grid showing whether $\lambda(t)$ for a given binary is time-stable (S, Red) or time-varying (V, Blue).}
@@ -371,7 +374,7 @@ A striking feature of \autoref{fig:lambda_full} is the broad division of $\lambd
     \cellcolor{red}\textcolor{white}{L} & 
     \cellcolor{red}\textcolor{white}{L} \\ 
     \hline
-    \multicolumn{1}{|c|}{\textbf{q$_b$/e$_b$}} & \textbf{0.0} & \textbf{0.1} & \textbf{0.2} & \textbf{0.3} & \textbf{0.4} & \textbf{0.5} & \textbf{0.6} & \textbf{0.8} \\
+    \multicolumn{1}{|c|}{\diagbox[height=2.2\line]{$q_b$}{$e_b$}} & \textbf{0.0} & \textbf{0.1} & \textbf{0.2} & \textbf{0.3} & \textbf{0.4} & \textbf{0.5} & \textbf{0.6} & \textbf{0.8} \\
     \hline
 \end{tabular}
 \caption{Reproduction of Table 1 from DeLaurentiis \& Rafikov (in preparation), showing whether the CBD about a binary of given $q_b$ and $e_b$ is locked (L; red) or precessing (P; blue). The CBD behavior is determined by evaluating the time-series of the eccentricity vector at $a\leq 5a_b$.}
@@ -379,7 +382,7 @@ A striking feature of \autoref{fig:lambda_full} is the broad division of $\lambd
 \end{table}
 
 
-In \autoref{tab:stable_varying_grid} we delineate whether $\lambda(t)$ is time-varying or time-stable via a blue cell with a V or red cell with an S, respectively. It is of particular note how similar \autoref{tab:stable_varying_grid}, which depicts the time-variability of $\lambda(t)$, is to \autoref{tab:locked_precessing_grid} which depicts the precession state of the CBD. For non-circular binaries, time-varying $\lambda(t)$ corresponds to a precessing CBD and time-stable $\lambda(t)$ corresponds to a locked CBD --- suggesting that the time-variability of preferential accretion is, in some part, paced by the behavior of the CBD and thereby the cavity. \Stwentythree already noted that forced precession in eccentric binaries is associated with strong modulation of the individual accretion rates on the precession timescale (their Section 3.5), invoking symmetry arguments to argue that circular binaries should remain time-stable while eccentric, forced-precessing binaries should display periodically fluctuating preferential accretion. Our \autoref{tab:stable_varying_grid} extends this picture systematically across the full $(e_b, q_b)$ grid, mapping every simulation in the suite onto the time-stable / time-varying dichotomy and matching it directly to the locked / precessing partition of the CBD.
+In \autoref{tab:stable_varying_grid} we delineate whether $\lambda(t)$ is time-varying or time-stable via a blue cell with a V or red cell with an S, respectively. It is of particular note how similar \autoref{tab:stable_varying_grid}, which depicts the time-variability of $\lambda(t)$, is to \autoref{tab:locked_precessing_grid} which depicts the precession state of the CBD. For non-circular binaries, time-varying $\lambda(t)$ corresponds to a precessing CBD and time-stable $\lambda(t)$ corresponds to a locked CBD --- suggesting that the time-variability of preferential accretion is, in some part, paced by the precession of the CBD and thereby the cavity. \Stwentythree already noted that forced precession in eccentric binaries is associated with strong modulation of the individual accretion rates on the precession timescale (their Section 3.5), invoking symmetry arguments to argue that circular binaries should remain time-stable while eccentric, forced-precessing binaries should display periodically fluctuating preferential accretion. Our \autoref{tab:stable_varying_grid} extends this picture systematically across the full $(e_b, q_b)$ grid, mapping every simulation in the suite onto the time-stable / time-varying dichotomy and matching it directly to the locked / precessing partition of the CBD.
 
 The $e_b = 0$ simulations are the natural test of this picture: their CBDs precess freely yet their $\lambda(t)$ is constant. This is consistent with \Stwentythree's symmetry argument --- the azimuthal symmetry of a circular binary orbit prevents the precessing CBD from imprinting its variability on the relative accretion rates, even though the disk itself is precessing. It is also consistent with \citealt{DeLaurentiis24}, who studied a different but analogous setup: instead of varying $e_b$ at fixed (non-precessing) binary, they fixed the binary on an eccentric orbit and imposed a general-relativistic apsidal precession on the binary itself. They found that the GR precession of the binary's pericenter introduces a dominant modulation in the accretion rate, but only when the binary is eccentric enough that the pericenter direction matters; circular binaries cannot register the precession at all. Our finding here --- that $e_b = 0$ binaries fail to develop $\lambda(t)$ variability despite a freely precessing CBD --- is the disk-precession analogue of their binary-precession result: in both cases, a non-zero binary eccentricity is required for any precession (of the disk or of the binary) to imprint itself on the relative accretion rates.
 
@@ -430,7 +433,7 @@ While there is certainly a trend, the level of preferential accretion is by no m
 
 More importantly, we would like to note a point of deviation from \Stwentythree. In \autoref{fig:mean_lambda_lines} and \autoref{fig:lambda_mean_heatmap} we report $\langle \lambda \rangle \neq 1$ for the $(e_b, q_b) = (0.2, 1.0)$ and $(0.3, 1.0)$ simulations. The $(e_b, q_b) = (0.2, 1.0)$ simulation in \Stwentythree had a numerical error, resulting in a deviation in $\lambda$. Accounting for this, we determine that for the $(e_b, q_b) = (0.2, 1.0)$ and $(0.3, 1.0)$ simulations, the binary, in fact, preferentially accretes onto one of the BHs. The implications of this are further discussed in \autoref{sec:mass_ratio} and \autoref{sec:observations}.
 
-Clearly, there is a variability in both the time behavior of preferential accretion and its value across simulations. In the following section we make a preliminary attempt to understand preferential accretion as an effect of the unique geometry between the binary and the CBD.
+Clearly, there is variability in both the fluctuations of preferential accretion and its mean value across simulations. In the following section we make a preliminary attempt to understand preferential accretion as an effect of the unique geometry between the binary and the CBD.
 
 \subsubsection{Preliminary analysis}\label{sec:preliminary_analysis}
 
@@ -532,7 +535,7 @@ From the above analysis it is clear that the naive explanation of distance to th
 
 
 \subsection{Mass ratio}\label{sec:mass_ratio}
-In addition to preferential accretion, we also report the average rate of change of the mass ratio, $\langle \dot{q} \rangle$. Namely, we calculate $\dot{q}(t)$ as described in \autoref{eqn:q_dot} in \autoref{sec:methods}, make a time-cut at $3000\tau$ to ensure that early instabilities do not effect our results, and report the mean on the truncated time-series in units of $\dot{M}_b/M_b$ in \autoref{fig:qdot_heatmap}.
+In addition to preferential accretion, we also report the average rate of change of the mass ratio, $\langle \dot{q} \rangle$. Namely, we calculate $\dot{q}(t)$ as described in \autoref{eqn:q_dot} in \autoref{sec:methods}, make a time-cut at $3000\,\tau_b$ to ensure that early instabilities do not affect our results, and report the mean on the truncated time-series in units of $\dot{M}_b/M_b$ in \autoref{fig:qdot_heatmap}.
 
 \begin{figure}
     \centering
@@ -581,7 +584,7 @@ In \autoref{fig:mdot_edd} we set the accretion rate of the binary to be $1 \dot{
 
 A striking feature of \autoref{fig:mdot_edd} is the wide variety in magnitude between the two BHs' accretion rates. Since the Eddington accretion rate scales linearly with the BH mass we expect that the accretion rates of the secondary to be increased greatly when normalized to Eddington units. This is evidenced by the nearly 2 order of magnitude difference between the secondary and primary at $q_b=0.1$. Further, we also notice that the behavior of the individual accretion rates of the black holes are quite varied, as the $\lambda(t)$ results suggested. Aside from the differences in whether the BHs' accretion rates are stable or not, the profile of the accretion rate itself is varied. Some binaries experience accretion rates that are close to sinusoidal (e.g $e_b=0.6, 0.8$), others seem to closer resemble square-waves (e.g.\ $e_b=0.3$ and $0.5$ at $q_b=1$), others yet have quite sharp breaks that evade simple characterizations (e.g.\ $(e_b, q_b) = (0.1, 0.7)$). Further, we note that the accretion rate of one BH is not always simply the accretion rate of the other with a different baseline and $\pi/2$ phase shift. Rather, they can take on notably different profiles from each other, resulting, at times, in both BHs experiencing a local peak in accretion rate, but because of different accretion rate amplitudes result in a peak in $\lambda$. It is this plethora of individual BH accretion rates, and the way in which they compare to each other, that yield an interesting assortment of jet-launching behaviors.
 
-In \autoref{fig:mdot_edd} we delineate three broad regimes: a) binaries where one BH launches a jet (blue), b) binaries where both BHs coincidentally launch jets in a sustained and repeated fashion (purple), c) binaries where both BHs launch jets in a successive, alternating fashion (green). We describe these jet-behavior regimes as single jets, dual jets, and flickering jets, respectively. We assigned jet-regimes by determining whether the accretion rate of each BH surpassed a threshold value of $1.1 \dot{M}_{\rm Edd}$ for greater than $50\tau$ --- a threshold chosen modestly above unity to allow the disk thickness to inflate enough to support the funnel collimation discussed above --- and whether those instances were temporally coincident for greater than $50\tau$. The $50\tau$ duration was chosen empirically: it is long enough to filter out short-lived threshold excursions (single-orbit transients, accretion bursts) and require a sustained launching episode, but short enough to preserve the alternating cadence we want to detect in the flickering regime. Jet activity is itself expected to follow the inner-disk dynamical time $t_{\rm dyn} \sim \Omega_K^{-1}$, which for our 2D setup is of order a binary orbital period; the $50\tau$ window therefore samples many dynamical times.
+In \autoref{fig:mdot_edd} we delineate three broad regimes: a) binaries where one BH launches a jet (blue), b) binaries where both BHs coincidentally launch jets in a sustained and repeated fashion (purple), c) binaries where both BHs launch jets in a successive, alternating fashion (green). We describe these jet-behavior regimes as single jets, dual jets, and flickering jets, respectively. We assigned jet-regimes by determining whether the accretion rate of each BH surpassed a threshold value of $1.1 \dot{M}_{\rm Edd}$ for greater than $50\,\tau_b$ --- a threshold chosen modestly above unity to allow the disk thickness to inflate enough to support the funnel collimation discussed above --- and whether those instances were temporally coincident for greater than $50\,\tau_b$. The $50\,\tau_b$ duration was chosen empirically: it is long enough to filter out short-lived threshold excursions (single-orbit transients, accretion bursts) and require a sustained launching episode, but short enough to preserve the alternating cadence we want to detect in the flickering regime. Jet activity is itself expected to follow the inner-disk dynamical time $t_{\rm dyn} \sim \Omega_K^{-1}$, which for our 2D setup is of order a binary orbital period; the $50\tau$ window therefore samples many dynamical times.
 
 We note that the majority of simulations at the assumed binary accretion rate of $1\dot{M}_{\rm Edd}$ are single-jet systems, where most of them have low $q_b$ due to the highly unequal Eddington-normalized accretion rates of those systems. 
 
@@ -620,7 +623,7 @@ To illustrate the dependence on $\dot{M}_b$, \autoref{fig:mini_jet_regimes} repr
 
 ``Flickering jets'' are a unique EM signature for BBHs. In order to use them to find BBH systems, we must ensure they ``flicker''--- i.e switch which BH is preferentially accreting---on a human time-scale. In the following we compute  and place constraints on the time to ``flicker.''
 
-Firstly, we require that the time to flicker $\tau_f$ be fewer than $10$ years in the observer's rest-frame, so that a few cycles could be possible to find in a human lifetime. For simplicity, we assume the flickering period is $300 \tau$. We also require that the binary not merge in less than $100$ years, in order to ensure that these systems are not exceedingly rare. 
+Firstly, we require that the time to flicker $\tau_f$ be fewer than $10$ years in the observer's rest-frame, so that a few cycles could be possible to find in a human lifetime. For simplicity, we assume the flickering period is $300\,\tau_b$ (evaluated at the binary's initial orbital period). We also require that the binary not merge in less than $100$ years, in order to ensure that these systems are not exceedingly rare. 
 
 In \autoref{fig:timescales} we display the region of parameter space that satisfies the above time constraints (within black lines) for various binary masses at various redshifts. The x-axis of each panel is the eccentricity $e_b$, the y-axis is the $a_b$ in Schwarzchild radii, and $\tau_f$ is reported in the observer frame. The gray lines represent the change in eccentricity and semi-major axis for the binary due to 10 orbits worth of GW radiation, computed via \citealt{peters_64}.
 
@@ -659,7 +662,7 @@ Thus, we are left with the set of coupled differential equations
 which we numerically integrate given an initial $a_0$, $q_0$, and $e_0$.
 
 
-Using $\langle \dot{q} \rangle$ \autoref{fig:qdot_heatmap}, we solve the initial value problem for two equal-mass binaries with $e_b = 0.2$ and $e_b = 0.3$, integrating forward for $10^4 \tau$ with $a_0 = 10^3 R_S$. The results are displayed in \autoref{fig:evolution_plot}. We assume a binary accretion rate $\dot{M}_b = 100 \, \dot{M}_{\rm Edd}$ throughout. This assumption sets the timescale over which the gas-driven equilibrium is reached but does not change the qualitative endpoint of the evolution over our integration interval. We retain time as the x-axis in \autoref{fig:evolution_plot} (rather than semi-major axis) because the relaxation to the gas-driven equilibrium is more naturally read in time units.
+Using $\langle \dot{q} \rangle$ \autoref{fig:qdot_heatmap}, we solve the initial value problem for two equal-mass binaries with $e_b = 0.2$ and $e_b = 0.3$, integrating forward for $10^4\,\tau_b$ with $a_0 = 10^3 R_S$. The results are displayed in \autoref{fig:evolution_plot}. We assume a binary accretion rate $\dot{M}_b = 100 \, \dot{M}_{\rm Edd}$ throughout. This assumption sets the timescale over which the gas-driven equilibrium is reached but does not change the qualitative endpoint of the evolution over our integration interval. We retain time as the x-axis in \autoref{fig:evolution_plot} (rather than semi-major axis) because the relaxation to the gas-driven equilibrium is more naturally read in time units.
 
 \begin{figure}
     \centering
