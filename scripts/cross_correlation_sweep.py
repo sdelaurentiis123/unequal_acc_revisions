@@ -32,7 +32,10 @@ os.makedirs(OUT, exist_ok=True)
 ECC = [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.8]
 QB = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
 T_CUT = 3000.0           # tau_b — discard transient (matches paper)
-MAX_LAG = 100            # in snapshots; snapshot cadence = 10 tau_b -> +/- 1000 tau_b
+MAX_LAG = 20             # in snapshots; snapshot cadence = 10 tau_b -> +/- 200 tau_b
+                         # Covers orbital up to viscous timescales without picking
+                         # up spurious matches at multi-precession-period lags
+                         # (cavity precession period ~350 tau_b in clean cells).
 DT_TAU = 10.0            # snapshot cadence in tau_b
 
 METRICS = ['lambda', 'mdot1', 'mdot2', 'rmin1', 'rmin2',

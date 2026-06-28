@@ -57,8 +57,30 @@ def build_grid(df, pair, field='peak_C'):
     return g
 
 
+def _e_edges():
+    edges = np.zeros(len(ECC) + 1)
+    edges[0] = ECC[0] - (ECC[1] - ECC[0]) / 2
+    edges[-1] = ECC[-1] + (ECC[-1] - ECC[-2]) / 2
+    for i in range(1, len(ECC)):
+        edges[i] = (ECC[i-1] + ECC[i]) / 2
+    return edges
+
+
+def _q_edges():
+    edges = np.zeros(len(QB) + 1)
+    edges[0] = QB[0] - 0.05
+    edges[-1] = QB[-1] + 0.05
+    for i in range(1, len(QB)):
+        edges[i] = (QB[i-1] + QB[i]) / 2
+    return edges
+
+
 def _draw_grid(df, field, signed, title, out_path):
-    """Draw a 2x7 panel grid of heatmaps for the 14 PAIRS."""
+    """Draw a 2x7 panel grid of heatmaps for the 14 PAIRS.
+
+    Uses pcolormesh with explicit edges so the non-uniform ECC grid
+    (gap between 0.6 and 0.8) is rendered to scale.
+    """
     fig, axes = plt.subplots(2, 7, figsize=(22, 8),
                              gridspec_kw={'wspace': 0.28, 'hspace': 0.4})
     if signed:
@@ -68,21 +90,26 @@ def _draw_grid(df, field, signed, title, out_path):
         norm = mcolors.Normalize(vmin=0.0, vmax=1.0)
         cmap = 'viridis'
 
+    e_e = _e_edges()
+    q_e = _q_edges()
+
     last_im = None
     for ax, (a, b) in zip(axes.flatten(), PAIRS):
         g = build_grid(df, (a, b), field=field)
         plotg = g if signed else np.abs(g)
-        last_im = ax.imshow(plotg, origin='lower', cmap=cmap, norm=norm,
-                            aspect='auto')
-        ax.set_xticks(range(len(ECC)))
+        last_im = ax.pcolormesh(e_e, q_e, plotg, cmap=cmap, norm=norm,
+                                shading='flat')
+        ax.set_xticks(ECC)
         ax.set_xticklabels([f'{x:.1f}' for x in ECC], fontsize=7)
-        ax.set_yticks(range(len(QB)))
+        ax.set_yticks(QB)
         ax.set_yticklabels([f'{y:.1f}' for y in QB], fontsize=7)
+        ax.set_xlim(e_e[0], e_e[-1])
+        ax.set_ylim(q_e[0], q_e[-1])
         ax.set_title(rf'${LABEL[a]}$ vs ${LABEL[b]}$', fontsize=10)
         ax.set_xlabel(r'$e_b$', fontsize=9)
         ax.set_ylabel(r'$q_b$', fontsize=9)
-        for i in range(len(QB)):
-            for j in range(len(ECC)):
+        for i, qb in enumerate(QB):
+            for j, eb in enumerate(ECC):
                 v = g[i, j]
                 if not np.isfinite(v):
                     continue
@@ -92,7 +119,7 @@ def _draw_grid(df, field, signed, title, out_path):
                 else:
                     color = 'black' if abs(v) > 0.6 else 'white'
                     txt = f'{abs(v):.2f}'
-                ax.text(j, i, txt, ha='center', va='center', fontsize=5.5,
+                ax.text(eb, qb, txt, ha='center', va='center', fontsize=5.5,
                         color=color)
 
     cbar = fig.colorbar(last_im, ax=axes, location='right', shrink=0.75,
